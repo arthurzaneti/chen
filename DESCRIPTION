@@ -1,11 +1,18 @@
 Package: chen
 Type: Package
-Title: What the Package Does (Title Case)
-Version: 0.1.0
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
-License: What license is it under?
+Title: Computational Tools for the Chen Distribution
+Version: 0.0.0.9000
+Author: Arthur Zaneti
+Maintainer: Arthur Zaneti <afzaneti1@gmail.com>
+Description: The "chen" package offers a collection of computational tools 
+    designed to work with the Chen distribution. Originally introduced by Zhenmin
+    Chen in 2000, this statistical distribution now finds its home in R with this 
+    dedicated package.
+License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
+RoxygenNote: 7.2.3
+Depends: checkmate
+Suggests: 
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
