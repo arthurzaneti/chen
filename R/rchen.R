@@ -14,8 +14,9 @@
 #'
 rchen <- function(n, theta){
 
-  checkmate::assert(checkmate::check_numeric(theta, len=2),
-                    checkmate::check_int(n))
+  checkmate::check_int(n)
+  checkmate::check_numeric(theta, len=2)
+  stopifnot("Parameters and n bigger than 0", n > 0, theta[1] > 0, theta[2] > 0)
 
   lambda <- theta[1]
   delta <- theta[2]

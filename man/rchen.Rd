@@ -4,12 +4,12 @@
 \alias{rchen}
 \title{Random generation for the chen distribution with parameters lambda and delta}
 \usage{
-rchen(theta, n)
+rchen(n, theta)
 }
 \arguments{
-\item{theta}{A length 2 numeric vector. The first element is the parameter lambda, and the second one is delta, both need to be bigger than 0.}
-
 \item{n}{number of random values to generate}
+
+\item{theta}{A length 2 numeric vector. The first element is the parameter lambda, and the second one is delta, both need to be bigger than 0.}
 }
 \value{
 A length n numeric vector.
