@@ -7,16 +7,16 @@
 #' @export
 #'
 #' @examples
-#' rchen(c(0.7, 0.4), 30)
-#' rchen(c(0.1, 0.1), 10)
-#' rchen(c(1, 0.3), 10)
-#' rchen(c(0.7, 0.01), 10)
+#' rchen(10, c(0.7, 0.4))
+#' rchen(10, c(0.1, 0.1))
+#' rchen(10, c(1, 0.3))
+#' hist(rchen(10, c(0.7, 0.01)))
 #'
 rchen <- function(n, theta){
 
   checkmate::check_int(n)
   checkmate::check_numeric(theta, len=2)
-  stopifnot("Parameters and n bigger than 0", n > 0, theta[1] > 0, theta[2] > 0)
+  stopifnot(n > 0, theta[1] > 0, theta[2] > 0)
 
   lambda <- theta[1]
   delta <- theta[2]
