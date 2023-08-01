@@ -11,21 +11,26 @@
 #' @examples
 #' estim_chen(rchen(10, c(1,1)))
 #'
-estim_chen <- function(y){
-  estim <- stats::optim(par=c(1,1),
-                        fn=ll_chen,
-                        y=y,
-                        method ="L-BFGS-B",
-                        hessian = T,
-                        lower = c(0, 0),
-                        control = list(fnscale=-1))
-  return(estim$par)
+estim_chen <- function(y, method = "BFGS"){
+
+  func <- log_likelihood
+  suppressWarnings(estim <- stats::optim(par = c(1, 0.5),
+                        fn = log_likelihood,
+                        y = y,
+                        method = method,
+                        hessian = F,
+                        control = list(fnscale = -1)))
+  return(estim)
 }
 
-ll_chen <- function(y, theta){ #maximum likelihood function
+log_likelihood <- function(y, theta){
+
   lambda <- theta[1]
   delta <- theta[2]
   n <- length(y)
-  MLF <- n * (2 * log(delta) + log(lambda)) +
+  ll <- n * (2 * log(delta) + log(lambda)) +
     sum((lambda-1) * log(y) - delta * exp(y ^ lambda) + y ^lambda)
+  return(sum(ll))
 }
+
+
