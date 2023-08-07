@@ -4,7 +4,11 @@
 #'
 #'
 #' @param y Values sampled from a reparameterized Chen distribution.
-#'
+#' @param method The optimisation method useed by optim, default is BFGS
+#' @param full If the return should be the entire list by optim or just the parameter
+#' estimations
+#' @param ci_alpha The alpha for calculating the confidence intervals. If null no confidence
+#' intervals will be calculated. Default in NULL
 #' @return The pair of estimated parameters. If full == TRUE than will return the same list as the optim function.
 #' If CI = TRUE will return the confidence interval.
 #' @export
@@ -25,26 +29,26 @@ estim_chen <- function(y, method = "BFGS", full = F, ci_alpha = NULL){
                                          method = method,
                                          hessian = T,
                                          control = list(fnscale = -1)))
+  param <- estim$par
   if(!is.null(ci_alpha)){
-    par <- estim$par
     inf <- solve(-estim$hessian)
-    a <- qnorm(1 - ci_alpha/2) * sqrt(diag(inf))
+    a <- stats::qnorm(1 - ci_alpha/2) * sqrt(diag(inf))
     # The name a here is arbitrary;
     # It is used just to store a part of the confidence interval calculation
-    lower_bound <- par - a
-    upper_bound <- par + a
+    lower_bound <- param - a
+    upper_bound <- param + a
     ci <- rbind(lower_bound, upper_bound)
     if(full){
       estim$confidence_intervals <- ci
       return(estim)
     }else{
-      return(rbind(par, ci))
+      return(rbind(param, ci))
     }
   }else{
     if(full){
       return(estim)
     }else{
-      return(par)
+      return(param)
     }
   }
 }

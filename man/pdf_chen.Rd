@@ -7,7 +7,7 @@
 pdf_chen(y, theta)
 }
 \arguments{
-\item{y}{A numeric}
+\item{y}{A numeric. The input of the mathematical function}
 
 \item{theta}{A length 2 numeric vector with the parameters.}
 }
