@@ -6,7 +6,7 @@
 #'  y^{\lambda - 1} \exp \left\lbrace \delta \left[ 1-\exp(y^{\lambda})\right]
 #'  +y^{\lambda} \right\rbrace  , \quad y>0.}Usually used for plotting.
 #'
-#' @param y A numeric
+#' @param y A numeric. The input of the mathematical function
 #' @param theta A length 2 numeric vector with the parameters.
 #'
 #' @return A double representing the probability density at \code{y}
@@ -16,8 +16,13 @@
 #' curve(pdf_chen(x, c(0.7, 0.1)), from = 0, to = 10, xlab = "y",
 #'   ylab = "Probability density")
 pdf_chen <- function(y, theta){
+  checkmate::check_number(y)
+  checkmate::check_numeric(theta, len = 2)
+  #__________________________________end_checks_________________________________
+
   lambda <- theta[1]
   delta <- theta[2]
   pdf <- delta * lambda * (y ^ (lambda - 1)) *
     exp(delta * (1 - exp(y ^ lambda)) + y ^ lambda)
 }
+

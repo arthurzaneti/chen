@@ -13,6 +13,11 @@
 #' estim_chen(rchen(10, c(1,1)))
 #'
 estim_chen <- function(y, method = "BFGS", full = F, ci_alpha = NULL){
+  checkmate::check_numeric(y)
+  checkmate::check_choice(method, c("Nelder-Mead", "BFGS", "CG", "L-BFGS-B", "SANN", "Brent"))
+  checkmate::check_logical(full)
+  if(!is.null(ci_alpha)) checkmate::check_number(ci_alpha)
+  #__________________________________end_checks_________________________________
 
   suppressWarnings(estim <- stats::optim(par= c(1, 2),
                                          fn = log_likelihood,

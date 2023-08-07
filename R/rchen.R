@@ -16,11 +16,10 @@
 #' hist(rchen(100, c(0.7, 0.01)))
 #'
 rchen <- function(n, theta){
-
-
   checkmate::check_int(n)
   checkmate::check_numeric(theta, min.len = 2, max.len = 3)
   stopifnot(n > 0, theta[1] > 0, theta[2] > 0)
+  #__________________________________end_checks_________________________________
 
   lambda <- theta[1]
   rquantiles <- stats::runif(n)
