@@ -17,6 +17,7 @@
 #'
 rchen <- function(n, theta){
 
+
   checkmate::check_int(n)
   checkmate::check_numeric(theta, min.len = 2, max.len = 3)
   stopifnot(n > 0, theta[1] > 0, theta[2] > 0)
