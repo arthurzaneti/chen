@@ -21,7 +21,7 @@
 estim_chen_rpr <- function(y, method = "BFGS", tau = 0.5, full = F, ci_alpha = NULL){
   checkmate::check_numeric(y)
   checkmate::check_choice(method, c("Nelder-Mead", "BFGS", "CG", "L-BFGS-B", "SANN", "Brent"))
-  checkmate::check_number(tau)
+  checkmate::check_number(tau, lower = 0, upper = 1)
   checkmate::check_logical(full)
   if(!is.null(ci_alpha)) checkmate::check_number(ci_alpha)
   #__________________________________end_checks_________________________________
