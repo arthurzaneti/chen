@@ -18,11 +18,18 @@ estimations}
 intervals will be calculated. Default in NULL}
 }
 \value{
-The pair of estimated parameters. If full == TRUE than will return the same list as the optim function.
-If CI = TRUE will return the confidence interval.
+If ci_alpha is set to NULL (default) and full is set to TRUE(default)
+ than the return is lenght 2 numeric vector with the parameter estimations. If
+ ci_alpha is a number, than the return is a 3x2 matrix with the parameter estimations
+ and their confidence intervals. If full is set to TRUE than the return is a
+ list, having by default 6 elements, if ci_alpha is a number than the list will
+ have 7 elements with the last one being the matrice of confidence intervals.
 }
 \description{
-The Maximum likelihood estimate for the pair of parameters is numerically approximated with optim from the stats package. The estim_chen function is effectivelly a wrapper for optim, but it defines and uses the Chen log-likelihood function as well.
+The Maximum likelihood estimate for the pair of parameters is numerically
+approximated with optim from the stats package. The estim_chen function is
+effectivelly a wrapper for optim, but it defines and uses the Chen
+log-likelihood function as well.
 }
 \examples{
 estim_chen(rchen(10, c(1,1)))
