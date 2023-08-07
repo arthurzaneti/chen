@@ -1,4 +1,4 @@
-#' @title Random generation for the chen distribution with parameters lambda and delta
+#' @title Random generation for the chen distribution
 #'
 #' @param n number of random values to generate
 #' @param theta The vector of parameters. If the vector has size 2 the values
@@ -13,7 +13,7 @@
 #' rchen(10, c(0.7, 0.4))
 #' rchen(10, c(0.1, 0.1))
 #' rchen(10, c(1, 0.3))
-#' hist(rchen(10, c(0.7, 0.01)))
+#' hist(rchen(100, c(0.7, 0.01)))
 #'
 rchen <- function(n, theta){
 

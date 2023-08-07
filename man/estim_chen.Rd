@@ -4,7 +4,7 @@
 \alias{estim_chen}
 \title{Parameter estimation for the Chen distribution}
 \usage{
-estim_chen(y)
+estim_chen(y, method = "BFGS")
 }
 \arguments{
 \item{y}{Values sampled from a Chen distribution.}
