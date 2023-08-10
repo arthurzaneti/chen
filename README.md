@@ -1,5 +1,5 @@
 # chen
-## Usin the package
+## Using the package
 
 Type the following in your R terminal
 ```r
