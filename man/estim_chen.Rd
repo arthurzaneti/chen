@@ -4,25 +4,25 @@
 \alias{estim_chen}
 \title{Parameter estimation for the reparameterized Chen distribution}
 \usage{
-estim_chen(y, method = "BFGS", full = F, ci_alpha = NULL)
+estim_chen(y, method = "BFGS", full = F, clvl = NULL)
 }
 \arguments{
 \item{y}{Values sampled from a reparameterized Chen distribution.}
 
-\item{method}{The optimisation method useed by optim, default is BFGS}
+\item{method}{The optimisation method used by optim, default is BFGS}
 
 \item{full}{If the return should be the entire list by optim or just the parameter
 estimations}
 
-\item{ci_alpha}{The alpha for calculating the confidence intervals. If null no confidence
-intervals will be calculated. Default in NULL}
+\item{clvl}{The confidence level for calculating the confidence intervals. If NULL no confidence
+intervals will be calculated. Default in NULL.}
 }
 \value{
-If ci_alpha is set to NULL (default) and full is set to TRUE(default)
+If clvl is set to NULL (default) and full is set to TRUE(default)
  than the return is lenght 2 numeric vector with the parameter estimations. If
- ci_alpha is a number, than the return is a 3x2 matrix with the parameter estimations
+ clvl is a number, than the return is a 3x2 matrix with the parameter estimations
  and their confidence intervals. If full is set to TRUE than the return is a
- list, having by default 6 elements, if ci_alpha is a number than the list will
+ list, having by default 6 elements, if clvl is a number than the list will
  have 7 elements with the last one being the matrice of confidence intervals.
 }
 \description{

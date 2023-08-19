@@ -16,26 +16,34 @@
 #' hist(rchen(100, c(0.7, 0.01)))
 #'
 rchen <- function(n, theta){
-  checkmate::check_int(n)
-  checkmate::check_numeric(theta, min.len = 2, max.len = 3)
-  stopifnot(n > 0, theta[1] > 0, theta[2] > 0)
-  #__________________________________end_checks_________________________________
-
-  lambda <- theta[1]
-  rquantiles <- stats::runif(n)
-  if(length(theta) == 2){ # not reparameterized
-
-    delta <- theta[2]
-    rvalues <- log((1-(log(1-rquantiles))/delta))^(1/lambda)
-    return (rvalues)
-
-  }else{ # reparameterized
-
-    mu <- theta[2]
-    tau <- theta[3]
-    rvalues <- (log(1 - log(1-rquantiles)*
-                      ((1-exp(mu^lambda))/log(1-tau))))^(1/lambda)
-    return(rvalues)
+  stopifnot(is.numeric(n), length(n) == 1)
+  stopifnot(class(theta) == "numeric" || class(theta) == "list")
+  if(class(theta) == "numeric"){
+    stopifnot(all(theta) > 0)
+    stopifnot(length(theta) == 2 || length(theta) == 3)
   }
+  else if(class(theta) == "list"){
+    stopifnot(length(theta) == 3)
+    stopifnot(is.numeric(theta[[2]]))
+    stopifnot(length(theta[[2]]) == n)
+  }
+
+  #_____________________________________________________________________________
+    lambda <- theta[[1]]
+    rquantiles <- stats::runif(n)
+    if(length(theta) == 2){ # not reparameterized
+
+      delta <- theta[2]
+      rvalues <- log((1-(log(1-rquantiles))/delta))^(1/lambda)
+      return (rvalues)
+
+    }else{ # reparameterized
+        mu <- theta[[2]]
+        tau <- theta[[3]]
+      rvalues <- (log(1 - log(1-rquantiles)*
+                        ((1-exp(mu^lambda))/log(1-tau))))^(1/lambda)
+      return(rvalues)
+    }
 }
+
 

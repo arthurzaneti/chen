@@ -7,39 +7,41 @@
 #'
 #'
 #' @param y Values sampled from a reparameterized Chen distribution.
-#' @param method The optimisation method useed by optim, default is BFGS
+#' @param method The optimisation method used by optim, default is BFGS
 #' @param full If the return should be the entire list by optim or just the parameter
 #' estimations
-#' @param ci_alpha The alpha for calculating the confidence intervals. If null no confidence
-#' intervals will be calculated. Default in NULL
-#' @return If ci_alpha is set to NULL (default) and full is set to TRUE(default)
+#' @param clvl The confidence level for calculating the confidence intervals. If NULL no confidence
+#' intervals will be calculated. Default in NULL.
+#' @return If clvl is set to NULL (default) and full is set to TRUE(default)
 #'  than the return is lenght 2 numeric vector with the parameter estimations. If
-#'  ci_alpha is a number, than the return is a 3x2 matrix with the parameter estimations
+#'  clvl is a number, than the return is a 3x2 matrix with the parameter estimations
 #'  and their confidence intervals. If full is set to TRUE than the return is a
-#'  list, having by default 6 elements, if ci_alpha is a number than the list will
+#'  list, having by default 6 elements, if clvl is a number than the list will
 #'  have 7 elements with the last one being the matrice of confidence intervals.
 #' @export
 #'
 #' @examples
 #' estim_chen(rchen(10, c(1,1)))
 #'
-estim_chen <- function(y, method = "BFGS", full = F, ci_alpha = NULL){
+estim_chen <- function(y, method = "BFGS", full = F, clvl = NULL){
   checkmate::check_numeric(y)
   checkmate::check_choice(method, c("Nelder-Mead", "BFGS", "CG", "L-BFGS-B", "SANN", "Brent"))
   checkmate::check_logical(full)
-  if(!is.null(ci_alpha)) checkmate::check_number(ci_alpha)
+  if(!is.null(clvl)) checkmate::check_number(clvl)
   #__________________________________end_checks_________________________________
 
-  suppressWarnings(estim <- stats::optim(par= c(1, 2),
+  lambda_start <- 1
+  delta_start <- 2
+  suppressWarnings(estim <- stats::optim(par= c(lambda_start, delta_start),
                                          fn = log_likelihood,
                                          y = y,
                                          method = method,
                                          hessian = T,
                                          control = list(fnscale = -1)))
   param <- estim$par
-  if(!is.null(ci_alpha)){
+  if(!is.null(clvl)){
     inf <- solve(-estim$hessian)
-    a <- stats::qnorm(1 - ci_alpha/2) * sqrt(diag(inf))
+    a <- stats::qnorm(1 - (1 - clvl)/2) * sqrt(diag(inf))
     # The name a here is arbitrary;
     # It is used just to store a part of the confidence interval calculation
     lower_bound <- param - a
