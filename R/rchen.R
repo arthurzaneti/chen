@@ -6,7 +6,7 @@
 #' If the vector has length 3 the values will be generated according to the
 #' reparameterized Chen distribution.
 #' @return A length n numeric vector.
-#' @import checkmate
+#' @importFrom stats runif
 #' @export
 #'
 #' @examples

@@ -19,6 +19,7 @@
 #'  and their confidence intervals. If full is set to TRUE than the return is a
 #'  list, having by default 6 elements, if clvl is a number than the list will
 #'  have 7 elements with the last one being the matrice of confidence intervals.
+#' @importFrom stats median, optim, qnorm
 #' @export
 #'
 #' @examples
