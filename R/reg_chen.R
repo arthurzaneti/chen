@@ -1,14 +1,35 @@
 #' Title
 #'
-#' @param data
-#' @param formula
-#' @param tau
+#' @param data A data.frame(or coercible to data.frame)
+#' @param formula The formula for the regression
+#' @param tau The quantile
+#' @param stripped Nothing yet...
 #'
-#' @return
+#' @return The linear model to predict the values of mu
+#'
 #' @export
-#'
+#' @importFrom stats optim
 #' @examples
+#' a <- runif(100)
+#' b <- runif(100)
+#' form <- y ~ a + b
+#' true_reg_coefficients <- c(2, 1)
+#' mus <- exp(cbind(a, b) %*% matrix(true_reg_coefficients))
+#' df <- data.frame(a = a, b = b, y = rchen(100, list(0.7, mus, 0.3)))
+#' reg_chen(df, form, tau = 0.3)
+#'
 reg_chen <- function(data, formula, tau = 0.5, stripped = F){ # For the reparametrized distribution only
+  tryCatch(data <- as.data.frame(data),
+           error = function(e) stop("The object provided as data is not coercible to data.frame"))
+  stopifnot(
+    is.data.frame(data),
+    all(c(formula[[2]], all.vars(formula[[3]])) %in% colnames(data)),
+    inherits(formula, "formula"),
+    is.numeric(tau),
+    tau >= 0,
+    tau <= 1,
+    is.logical(stripped)
+  )
   #___________________________________ESTIMATION________________________________
   escore <- function(y, theta, X, tau) {
    lambda <- theta[1]

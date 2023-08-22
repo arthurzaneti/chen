@@ -17,12 +17,12 @@
 #'
 rchen <- function(n, theta){
   stopifnot(is.numeric(n), length(n) == 1)
-  stopifnot(class(theta) == "numeric" || class(theta) == "list")
-  if(class(theta) == "numeric"){
-    stopifnot(all(theta) > 0)
+  stopifnot(is.numeric(theta) || is.list(theta))
+  if(is.numeric(theta)){
+    stopifnot(all(theta > 0))
     stopifnot(length(theta) == 2 || length(theta) == 3)
   }
-  else if(class(theta) == "list"){
+  else if(is.list(theta)){
     stopifnot(length(theta) == 3)
     stopifnot(is.numeric(theta[[2]]))
     stopifnot(length(theta[[2]]) == n)

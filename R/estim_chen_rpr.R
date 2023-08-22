@@ -19,18 +19,23 @@
 #'  and their confidence intervals. If full is set to TRUE than the return is a
 #'  list, having by default 6 elements, if clvl is a number than the list will
 #'  have 7 elements with the last one being the matrice of confidence intervals.
-#' @importFrom stats median, optim, qnorm
+#' @importFrom stats median optim qnorm
 #' @export
 #'
 #' @examples
 #' estim_chen_rpr(rchen(100, c(0.7,7)), tau = 0.5)
 #'
 estim_chen_rpr <- function(y, method = "BFGS", tau = 0.5, full = F, clvl = NULL){
-  checkmate::check_numeric(y)
-  checkmate::check_choice(method, c("Nelder-Mead", "BFGS", "CG", "L-BFGS-B", "SANN", "Brent"))
-  checkmate::check_number(tau, lower = 0, upper = 1)
-  checkmate::check_logical(full)
-  if(!is.null(clvl)) checkmate::check_number(clvl)
+  stopifnot(
+    is.numeric(y),
+    method %in% c("Nelder-Mead", "BFGS", "CG", "L-BFGS-B", "SANN", "Brent"),
+    is.numeric(tau),
+    tau >= 0,
+    tau <= 1,
+    is.logical(full),
+    is.null(clvl) || is.numeric(clvl)
+  )
+
   #__________________________________end_checks_________________________________
   lambda_start <- 1
   mu_start <- stats::median(y)

@@ -16,7 +16,7 @@ A double representing the cumulative probability till y \code{y}
 }
 \description{
 The mathematical function that describes the cumulative probability for the Chen
- distribution. Its formula is \deqn{F(y| \lambda,\delta)= 1 - \exp \left[  \delta \left( 1-\exp(y^{\lambda}) \right) \right].}Usually used for plotting.
+ distribution. Its formula is \deqn{F(y| \lambda,\delta)= 1 - \exp \left[  \delta \left( 1-\exp(y^{\lambda}) \right) \right].}.
 }
 \examples{
 curve(pdf_chen(x, c(0.7, 0.1)), from = 0, to = 10, xlab = "y",
