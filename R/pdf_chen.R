@@ -1,4 +1,4 @@
-#' @title The Chen Probability Density Function
+#' @title The Probability Density Function of the Chen Distribution
 #'
 #' @description
 #' The mathematical function that describes the probability density for the Chen

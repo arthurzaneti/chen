@@ -2,7 +2,7 @@
 % Please edit documentation in R/pdf_chen.R
 \name{pdf_chen}
 \alias{pdf_chen}
-\title{The Chen Probability Density Function}
+\title{The Probability Density Function of the Chen Distribution}
 \usage{
 pdf_chen(y, theta)
 }

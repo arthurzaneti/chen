@@ -8,8 +8,8 @@
 #' @export
 #'
 #' @examples
-reg_chen <- function(data, formula, tau = 0.5){ # For the reparametrized distribution only
-  #_____________________________________________________________________________
+reg_chen <- function(data, formula, tau = 0.5, stripped = F){ # For the reparametrized distribution only
+  #___________________________________ESTIMATION________________________________
   escore <- function(y, theta, X, tau) {
    lambda <- theta[1]
    beta <- theta[2:length(theta)]
@@ -65,8 +65,19 @@ reg_chen <- function(data, formula, tau = 0.5){ # For the reparametrized distrib
                         X = X,
                         tau = tau)
 
-  reg_model <- estim
-  class(reg_model) <- "reg_chen_model"
-  return(reg_model)
+  if(estim$convergence != 0){
+    stop("The optimization did not converge!!!!
+    The convergence value was: ", estim$convergence, ". Try looking at stats::optim documentation to see what this value means")
+  }
+  #____________________________BUILDING THE RETURN______________________________
+  model <- list()
+  model$names <- colnames(X)
+  model$coefficients <- estim$par[2: length(estim$par)]
+  model$formula <- formula
+  model$lambda <- estim$par[1]
+  model$tau <- tau
+
+  model$call <-  match.call()
+  return(model)
 }
 
