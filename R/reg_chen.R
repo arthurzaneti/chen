@@ -30,6 +30,7 @@ reg_chen <- function(data, formula, tau = 0.5, stripped = F){ # For the reparame
     tau <= 1,
     is.logical(stripped)
   )
+
   #___________________________________ESTIMATION________________________________
   escore <- function(y, theta, X, tau) {
    lambda <- theta[1]
@@ -54,6 +55,7 @@ reg_chen <- function(data, formula, tau = 0.5, stripped = F){ # For the reparame
     result_vector <- c(lambda_sum, beta_product)
     return(result_vector)
   }
+
   log_likelihood_rpr_reg <- function(y, theta, X, tau){
     lambda <- theta[1]
 

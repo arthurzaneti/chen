@@ -16,8 +16,12 @@
 #' curve(pdf_chen(x, c(0.7, 0.1)), from = 0, to = 10, xlab = "y",
 #'   ylab = "Probability density")
 pdf_chen <- function(y, theta){
-  checkmate::check_number(y)
-  checkmate::check_numeric(theta, len = 2)
+  bp_stopifnot(
+    "y must be a numeric vector" = is.numeric(y),
+    "Theta must be a numeric vector" = is.numeric(theta),
+    "Theta must have a length of 2, but instead has length " = length(theta) == 2
+  )
+
   #__________________________________end_checks_________________________________
 
   lambda <- theta[1]

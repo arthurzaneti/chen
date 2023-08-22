@@ -25,10 +25,12 @@
 #' estim_chen(rchen(10, c(1,1)))
 #'
 estim_chen <- function(y, method = "BFGS", full = F, clvl = NULL){
-  checkmate::check_numeric(y)
-  checkmate::check_choice(method, c("Nelder-Mead", "BFGS", "CG", "L-BFGS-B", "SANN", "Brent"))
-  checkmate::check_logical(full)
-  if(!is.null(clvl)) checkmate::check_number(clvl)
+  stopifnot(
+    is.numeric(y),
+    method %in% c("Nelder-Mead", "BFGS", "CG", "L-BFGS-B", "SANN", "Brent"),
+    is.logical(full),
+    is.null(clvl) || is.numeric(clvl)
+  )
   #__________________________________end_checks_________________________________
 
   lambda_start <- 1
