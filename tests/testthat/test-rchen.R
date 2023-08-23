@@ -5,3 +5,6 @@ test_that("Invalid inputs",{
   expect_error(rchen(1, c("a", 0.5)))
 })
 
+# Really hard to test random functions, will do it latter
+
+

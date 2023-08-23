@@ -8,6 +8,6 @@ test_that("Return types",{
   expect_list(estim_chen(rvalues, full = T, clvl = 0.95), len = 7)
 })
 
-test_that("Calculations", {
+test_that("Snaps", {
   # Não sei por enquanto
 })

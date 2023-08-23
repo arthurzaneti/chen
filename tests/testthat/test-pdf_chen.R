@@ -1,8 +1,8 @@
 testthat::test_that("pdf_chen works correctly", {
-  y <- c(1, 2, 3)
-  theta <- c(0.5, 0.1)
-
-  result <- pdf_chen(y, theta)
-  expected <- c(0.1144565, 0.1065206, 0.1024674)
-  expect_equal(result, expected, tolerance = 1e-6)
+  expect_snapshot(cat(pdf_chen(1, c(0.2, 0.01))))
+  expect_snapshot(cat(pdf_chen(2, c(0.3, 0.1))))
+  expect_snapshot(cat(pdf_chen(3, c(1, 0.2))))
+  expect_snapshot(cat(pdf_chen(4, c(1, 0.23))))
+  expect_snapshot(cat(pdf_chen(5, c(0.6789, 0.89423))))
+  expect_snapshot(cat(pdf_chen(6, c(2, 2))))
 })

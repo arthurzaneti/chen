@@ -1,11 +1,14 @@
-#' @title Random generation for the chen distribution
+#' @title Random generation for the Chen distribution
+#'
 #'
 #' @param n number of random values to generate
-#' @param theta The vector of parameters. If the vector has size 2 the values
-#' will be generated according to the standard Chen probaiblity density function.
-#' If the vector has length 3 the values will be generated according to the
-#' reparameterized Chen distribution.
+#' @param theta A length 2 vector, or coercible to vector, look at details for
+#' more information about the coersion. This will be the parameters of the distribution
+#' .The first one is considered to be lambda and the second one to be delta
+#'
 #' @return A length n numeric vector.
+#' @details The coersion of theta to vector is done using `as.vector(unlist(theta))`
+#' so lists, matrices and dataframes will work, as long as they are length 2.
 #' @importFrom stats runif
 #' @export
 #'
@@ -16,34 +19,18 @@
 #' hist(rchen(100, c(0.7, 0.01)))
 #'
 rchen <- function(n, theta){
-  stopifnot(is.numeric(n), length(n) == 1)
-  stopifnot(is.numeric(theta) || is.list(theta))
-  if(is.numeric(theta)){
-    stopifnot(all(theta > 0))
-    stopifnot(length(theta) == 2 || length(theta) == 3)
-  }
-  else if(is.list(theta)){
-    stopifnot(length(theta) == 3)
-    stopifnot(is.numeric(theta[[2]]))
-    stopifnot(length(theta[[2]]) == n)
-  }
+  stopifnot(is.numeric(n), length(n) == 1, n > 0)
+  theta <- as.vector(unlist(theta))
+  stopifnot(is.numeric(theta))
+  stopifnot(all(theta > 0))
+  stopifnot(length(theta) == 2 || length(theta) == 3)
 
   #_____________________________________________________________________________
-    lambda <- theta[[1]]
-    rquantiles <- stats::runif(n)
-    if(length(theta) == 2){ # not reparameterized
+  lambda <- theta[1]
+  delta <- theta[2]
+  rquantiles <- stats::runif(n)
+  log((1-(log(1-rquantiles))/delta))^(1/lambda)
 
-      delta <- theta[2]
-      rvalues <- log((1-(log(1-rquantiles))/delta))^(1/lambda)
-      return (rvalues)
-
-    }else{ # reparameterized
-        mu <- theta[[2]]
-        tau <- theta[[3]]
-      rvalues <- (log(1 - log(1-rquantiles)*
-                        ((1-exp(mu^lambda))/log(1-tau))))^(1/lambda)
-      return(rvalues)
-    }
 }
 
 
