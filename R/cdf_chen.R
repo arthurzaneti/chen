@@ -11,11 +11,15 @@
 #' @export
 #'
 #' @examples
-#' curve(pdf_chen(x, c(0.7, 0.1)), from = 0, to = 10, xlab = "y",
-#'   ylab = "Probability density")
+#' #same numbers as the cdf_chen function
+#' curve(cdf_chen(x, theta = c(0.4, 0.01)), from = 0, to = 100, xlab = "y", ylab = "cdf", n = 1000)
+#' curve(cdf_chen(x, theta = c(0.4, 0.1)), from = 0, to = 100, xlab = "y", ylab = "cdf", n = 1000)
+#' curve(cdf_chen(x, theta = c(0.7, 0.01)), from = 0, to = 100, xlab = "y", ylab = "cdf", n = 1000)
+#' curve(cdf_chen(x, theta = c(1, 0.01)), from = 0, to = 100, xlab = "y", ylab = "cdf", n = 1000)
+#' curve(cdf_chen(x, theta = c(1, 0.0001)), from = 0, to = 100, xlab = "y", ylab = "cdf", n = 1000)
 cdf_chen <- function(y, theta){
   #__________________________________end_checks_________________________________
   lambda <- theta[1]
   delta <- theta[2]
-  return(1 - exp(delta * (1 - exp(y ^ lambda))))
+  cdf <- 1 - exp(delta * (1 - exp(y ^ lambda)))
 }
