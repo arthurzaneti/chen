@@ -6,8 +6,9 @@
 #' log-likelihood function as well.
 #'
 #'
-#' @param y Values sampled from a reparameterized Chen distribution.
-#' @param method The optimisation method useed by optim, default is BFGS
+#' @param y A numeric vector, or coercible to vector using `as.vector(unlist())`.
+#' Values sampled from a reparameterized Chen distribution.
+#' @param method The optimisation method used by optim, default is BFGS
 #' @param tau The quantile for the reparameterized distribution
 #' @param full If the return should be the entire list by optim or just the parameter
 #' estimations
@@ -26,15 +27,13 @@
 #' estim_chen_rpr(rchen(100, c(0.7,7)), tau = 0.5)
 #'
 estim_chen_rpr <- function(y, method = "BFGS", tau = 0.5, full = F, clvl = NULL){
-  stopifnot(
-    is.numeric(y),
-    method %in% c("Nelder-Mead", "BFGS", "CG", "L-BFGS-B", "SANN", "Brent"),
-    is.numeric(tau),
-    tau >= 0,
-    tau <= 1,
-    is.logical(full),
-    is.null(clvl) || is.numeric(clvl)
-  )
+  y <- as.vector(unlist(y))
+  checkmate::assert_numeric(y, lower = 0, any.missing = F)
+  checkmate::assert_choice(method, c("Nelder-Mead", "BFGS", "CG", "L-BFGS-B", "SANN",
+                                     "Brent"))
+  checkmate::assert_number(tau, lower = 0, upper = 1)
+  checkmate::assert_logical(full)
+  checkmate::assert_number(clvl, null.ok = T, lower = 0, upper = 1)
 
   #__________________________________end_checks_________________________________
   lambda_start <- 1

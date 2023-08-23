@@ -7,9 +7,10 @@
 estim_chen_rpr(y, method = "BFGS", tau = 0.5, full = F, clvl = NULL)
 }
 \arguments{
-\item{y}{Values sampled from a reparameterized Chen distribution.}
+\item{y}{A numeric vector, or coercible to vector using `as.vector(unlist())`.
+Values sampled from a reparameterized Chen distribution.}
 
-\item{method}{The optimisation method useed by optim, default is BFGS}
+\item{method}{The optimisation method used by optim, default is BFGS}
 
 \item{tau}{The quantile for the reparameterized distribution}
 

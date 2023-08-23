@@ -9,22 +9,23 @@
 #'
 #' @export
 #' @importFrom stats optim
+#' @import checkmate
 #' @examples
 #' a <- runif(100)
 #' b <- runif(100)
 #' form <- y ~ a + b
 #' true_reg_coefficients <- c(2, 1)
 #' mus <- exp(cbind(a, b) %*% matrix(true_reg_coefficients))
-#' df <- data.frame(a = a, b = b, y = rchen(100, list(0.7, mus, 0.3)))
+#' df <- data.frame(a = a, b = b, y = rchen_rpr(100, list(0.7, mus), 0.3))
 #' reg_chen(df, form, tau = 0.3)
 #'
 reg_chen <- function(data, formula, tau = 0.5, stripped = F){ # For the reparametrized distribution only
   tryCatch(data <- as.data.frame(data),
            error = function(e) stop("The object provided as data is not coercible to data.frame"))
-  checkmate::check_data_frame(data, any.missing = F)
-  checkmate::check_formula(formula)
-  checkmate::check_number(tau, lower = 0, upper = 1)
-  checkmate::check_logical(stripped)
+  checkmate::assert_data_frame(data, any.missing = F)
+  checkmate::assert_formula(formula)
+  checkmate::assert_number(tau, lower = 0, upper = 1)
+  checkmate::assert_logical(stripped)
 
   #___________________________________ESTIMATION________________________________
   escore <- function(y, theta, X, tau) {

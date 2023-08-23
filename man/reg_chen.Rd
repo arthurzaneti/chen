@@ -27,7 +27,7 @@ b <- runif(100)
 form <- y ~ a + b
 true_reg_coefficients <- c(2, 1)
 mus <- exp(cbind(a, b) \%*\% matrix(true_reg_coefficients))
-df <- data.frame(a = a, b = b, y = rchen(100, list(0.7, mus, 0.3)))
+df <- data.frame(a = a, b = b, y = rchen_rpr(100, list(0.7, mus), 0.3))
 reg_chen(df, form, tau = 0.3)
 
 }

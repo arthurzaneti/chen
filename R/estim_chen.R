@@ -6,7 +6,8 @@
 #' log-likelihood function as well.
 #'
 #'
-#' @param y Values sampled from a reparameterized Chen distribution.
+#' @param y A numeric vector, or coercible to vector using `as.vector(unlist())`.
+#' Values sampled from a Chen distribution.
 #' @param method The optimisation method used by optim, default is BFGS
 #' @param full If the return should be the entire list by optim or just the parameter
 #' estimations
@@ -19,18 +20,19 @@
 #'  list, having by default 6 elements, if clvl is a number than the list will
 #'  have 7 elements with the last one being the matrice of confidence intervals.
 #' @importFrom stats median optim qnorm
+#' @import checkmate
 #' @export
 #'
 #' @examples
 #' estim_chen(rchen(10, c(1,1)))
 #'
 estim_chen <- function(y, method = "BFGS", full = F, clvl = NULL){
-  stopifnot(
-    is.numeric(y),
-    method %in% c("Nelder-Mead", "BFGS", "CG", "L-BFGS-B", "SANN", "Brent"),
-    is.logical(full),
-    is.null(clvl) || is.numeric(clvl)
-  )
+  y <- as.vector(unlist(y))
+  checkmate::assert_numeric(y, lower = 0, any.missing = F)
+  checkmate::assert_choice(method, c("Nelder-Mead", "BFGS", "CG", "L-BFGS-B", "SANN",
+                                     "Brent"))
+  checkmate::assert_logical(full)
+  checkmate::assert_number(clvl, null.ok = T, lower = 0, upper = 1)
   #__________________________________end_checks_________________________________
 
   lambda_start <- 1

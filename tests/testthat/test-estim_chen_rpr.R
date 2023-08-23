@@ -1,5 +1,5 @@
 set.seed(1)
-rvalues <- rchen(100, c(0.7, 7, 0.5))
+rvalues <- rchen_rpr(100, c(0.7, 7), 0.5)
 
 test_that("Return types",{
   expect_vector(estim_chen_rpr(rvalues, tau = 0.5))

@@ -7,7 +7,8 @@
 estim_chen(y, method = "BFGS", full = F, clvl = NULL)
 }
 \arguments{
-\item{y}{Values sampled from a reparameterized Chen distribution.}
+\item{y}{A numeric vector, or coercible to vector using `as.vector(unlist())`.
+Values sampled from a Chen distribution.}
 
 \item{method}{The optimisation method used by optim, default is BFGS}
 
