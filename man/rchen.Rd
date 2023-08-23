@@ -2,23 +2,26 @@
 % Please edit documentation in R/rchen.R
 \name{rchen}
 \alias{rchen}
-\title{Random generation for the chen distribution}
+\title{Random generation for the Chen distribution}
 \usage{
 rchen(n, theta)
 }
 \arguments{
 \item{n}{number of random values to generate}
 
-\item{theta}{The vector of parameters. If the vector has size 2 the values
-will be generated according to the standard Chen probaiblity density function.
-If the vector has length 3 the values will be generated according to the
-reparameterized Chen distribution.}
+\item{theta}{A length 2 vector, or coercible to vector, look at details for
+more information about the coersion. This will be the parameters of the distribution
+.The first one is considered to be lambda and the second one to be delta}
 }
 \value{
 A length n numeric vector.
 }
 \description{
-Random generation for the chen distribution
+Random generation for the Chen distribution
+}
+\details{
+The coersion of theta to vector is done using `as.vector(unlist(theta))`
+so lists and matrices will work, as long as they are length 2.
 }
 \examples{
 rchen(10, c(0.7, 0.4))

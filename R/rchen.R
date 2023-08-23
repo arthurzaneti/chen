@@ -1,6 +1,5 @@
 #' @title Random generation for the Chen distribution
 #'
-#'
 #' @param n number of random values to generate
 #' @param theta A length 2 vector, or coercible to vector, look at details for
 #' more information about the coersion. This will be the parameters of the distribution
@@ -8,8 +7,9 @@
 #'
 #' @return A length n numeric vector.
 #' @details The coersion of theta to vector is done using `as.vector(unlist(theta))`
-#' so lists, matrices and dataframes will work, as long as they are length 2.
+#' so lists and matrices will work, as long as they are length 2.
 #' @importFrom stats runif
+#' @import checkmate
 #' @export
 #'
 #' @examples
@@ -19,18 +19,19 @@
 #' hist(rchen(100, c(0.7, 0.01)))
 #'
 rchen <- function(n, theta){
-  stopifnot(is.numeric(n), length(n) == 1, n > 0)
+  checkmate::assert_number(n, lower = 1)
+  if(!checkmate::test_int(n)){
+    warning("The value provided for n is not an integer, but it was coersed to one:
+                Provided: ", n, " | Used: ", as.integer(n), "\n ")
+    n <- as.integer(n)
+  }
   theta <- as.vector(unlist(theta))
-  stopifnot(is.numeric(theta))
-  stopifnot(all(theta > 0))
-  stopifnot(length(theta) == 2 || length(theta) == 3)
-
+  checkmate::assert_numeric(theta, any.missing = F, len = 2, lower = 0)
   #_____________________________________________________________________________
   lambda <- theta[1]
   delta <- theta[2]
   rquantiles <- stats::runif(n)
-  log((1-(log(1-rquantiles))/delta))^(1/lambda)
-
+  return(log((1-(log(1-rquantiles))/delta))^(1/lambda))
 }
 
 

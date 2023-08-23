@@ -21,15 +21,10 @@
 reg_chen <- function(data, formula, tau = 0.5, stripped = F){ # For the reparametrized distribution only
   tryCatch(data <- as.data.frame(data),
            error = function(e) stop("The object provided as data is not coercible to data.frame"))
-  stopifnot(
-    is.data.frame(data),
-    all(c(formula[[2]], all.vars(formula[[3]])) %in% colnames(data)),
-    inherits(formula, "formula"),
-    is.numeric(tau),
-    tau >= 0,
-    tau <= 1,
-    is.logical(stripped)
-  )
+  checkmate::check_data_frame(data, any.missing = F)
+  checkmate::check_formula(formula)
+  checkmate::check_number(tau, lower = 0, upper = 1)
+  checkmate::check_logical(stripped)
 
   #___________________________________ESTIMATION________________________________
   escore <- function(y, theta, X, tau) {
