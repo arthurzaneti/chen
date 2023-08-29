@@ -24,11 +24,6 @@
 #'
 rchen_rpr <- function(n, theta, tau = 0.5){
   checkmate::assert_number(n, lower = 1)
-  if(!checkmate::test_int(n)){
-    warning("The value provided for n is not an integer, but it was coersed to one:
-                Provided: ", n, " | Used: ", as.integer(n), "\n ")
-    n <- as.integer(n)
-  }
   theta <- as.vector(unlist(theta))
   checkmate::assert_numeric(theta, any.missing = F, lower = 0)
   checkmate::assert_true(length(theta) == 2 || length(theta) == (n+1))

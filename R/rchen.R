@@ -20,11 +20,6 @@
 #'
 rchen <- function(n, theta){
   checkmate::assert_number(n, lower = 1)
-  if(!checkmate::test_int(n)){
-    warning("The value provided for n is not an integer, but it was coersed to one:
-                Provided: ", n, " | Used: ", as.integer(n), "\n ")
-    n <- as.integer(n)
-  }
   theta <- as.vector(unlist(theta))
   checkmate::assert_numeric(theta, any.missing = F, len = 2, lower = 0)
   #_____________________________________________________________________________
