@@ -44,6 +44,7 @@ reg_chen <- function(data, formula, tau = 0.5, stripped = F){ # For the reparame
                                           (1 - exp(exponentiated_predictor^lambda))) + ((log(1 - tau) * (exponentiated_predictor^lambda) *
                                           log(exponentiated_predictor) * exp(exponentiated_predictor^lambda) * (1 - exp(y^lambda)))
                                           / ((1 - exp(exponentiated_predictor^lambda))^2)) + 1 / lambda + y^lambda * log(y) + log(y))
+
     tau_matrix <- diag(exp(linear_predictor))
     lambda_sum <- sum(lambda_contribution)
     beta_product <- t(X) %*% tau_matrix %*% beta_contribution
