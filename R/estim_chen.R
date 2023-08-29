@@ -8,9 +8,6 @@
 #'
 #' @param y A numeric vector, or coercible to vector using `as.vector(unlist())`.
 #' Values sampled from a Chen distribution.
-#' @param method The optimisation method used by optim, default is BFGS
-#' @param full If the return should be the entire list by optim or just the parameter
-#' estimations
 #' @param clvl The confidence level for calculating the confidence intervals. If NULL no confidence
 #' intervals will be calculated. Default in NULL.
 #' @param n_bootstrap The number of resamples for bootstrap correction. Default is NULL,
@@ -27,7 +24,9 @@
 #' @export
 #'
 #' @examples
-#' estim_chen(rchen(10, c(1,1)))
+#' estim_chen(rchen(100, c(1,1)))
+#' estim_chen(rchen(100, c(1,1)), clvl = 0.95)
+#' estim_chen(rchen(100, c(1,1)), clvl = 0.95, n_bootstrap = 100)
 #'
 estim_chen <- function(y, clvl = NULL, n_bootstrap = NULL) {
   y <- as.vector(unlist(y))
@@ -58,10 +57,10 @@ estim_chen <- function(y, clvl = NULL, n_bootstrap = NULL) {
     boot_results$R <- boot_results$R - error_count
 
     if (!is.null(clvl)) {
-      boot_ci_lambda <- boot::boot.ci(boot_results, type = "basic", index = 1, conf = clvl) # Specifying index because there are 2 parameters
-      boot_ci_delta <- boot::boot.ci(boot_results, type = "basic", index = 2, conf = clvl)
-      lambda_ci <- boot_ci_lambda$basic[c(4,5)]
-      delta_ci <- boot_ci_delta$basic[c(4,5)]
+      boot_ci_lambda <- boot::boot.ci(boot_results, type = "norm", index = 1, conf = clvl) # Specifying index because there are 2 parameters
+      boot_ci_delta <- boot::boot.ci(boot_results, type = "norm", index = 2, conf = clvl)
+      lambda_ci <- boot_ci_lambda$normal[c(2,3)]
+      delta_ci <- boot_ci_delta$normal[c(2,3)]
       ci <- cbind(lambda_ci, delta_ci)
       rownames(ci) <- c("lower bound", "upper bound")
       out <- list(t0 = boot_results$t0,

@@ -4,19 +4,17 @@
 \alias{estim_chen}
 \title{Parameter estimation for the reparameterized Chen distribution}
 \usage{
-estim_chen(y, method = "BFGS", full = F, clvl = NULL)
+estim_chen(y, clvl = NULL, n_bootstrap = NULL)
 }
 \arguments{
 \item{y}{A numeric vector, or coercible to vector using `as.vector(unlist())`.
 Values sampled from a Chen distribution.}
 
-\item{method}{The optimisation method used by optim, default is BFGS}
-
-\item{full}{If the return should be the entire list by optim or just the parameter
-estimations}
-
 \item{clvl}{The confidence level for calculating the confidence intervals. If NULL no confidence
 intervals will be calculated. Default in NULL.}
+
+\item{n_bootstrap}{The number of resamples for bootstrap correction. Default is NULL,
+so no boostrap correction occurs.}
 }
 \value{
 If clvl is set to NULL (default) and full is set to TRUE(default)
@@ -33,6 +31,8 @@ effectivelly a wrapper for optim, but it defines and uses the Chen
 log-likelihood function as well.
 }
 \examples{
-estim_chen(rchen(10, c(1,1)))
+estim_chen(rchen(100, c(1,1)))
+estim_chen(rchen(100, c(1,1)), clvl = 0.95)
+estim_chen(rchen(100, c(1,1)), clvl = 0.95, n_bootstrap = 100)
 
 }

@@ -1,14 +1,9 @@
 set.seed(1)
 rvalues <- rchen_rpr(100, c(0.7, 7), 0.5)
 
-test_that("Return types",{
-  expect_vector(estim_chen_rpr(rvalues, tau = 0.5))
-  expect_true(is.matrix(estim_chen_rpr(rvalues, tau = 0.5, clvl = 0.95)))
-  expect_list(estim_chen_rpr(rvalues, tau = 0.5, full = T), len = 6)
-  expect_list(estim_chen_rpr(rvalues, tau = 0.5, full = T, clvl = 0.95), len = 7)
-})
-
-test_that("Calculations", {
-  # Não sei por enquanto
+test_that("Return length",{
+  expect_list(estim_chen_rpr(rvalues), len = 1)
+  expect_list(estim_chen_rpr(rvalues, clvl = 0.95), len = 2)
+  expect_list(estim_chen_rpr(rvalues, clvl = 0.95, n_bootstrap = 10), len = 4)
 })
 

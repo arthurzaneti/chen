@@ -4,21 +4,19 @@
 \alias{estim_chen_rpr}
 \title{Parameter estimation for the reparameterized Chen distribution}
 \usage{
-estim_chen_rpr(y, method = "BFGS", tau = 0.5, full = F, clvl = NULL)
+estim_chen_rpr(y, tau = 0.5, clvl = NULL, n_bootstrap = NULL)
 }
 \arguments{
 \item{y}{A numeric vector, or coercible to vector using `as.vector(unlist())`.
 Values sampled from a reparameterized Chen distribution.}
 
-\item{method}{The optimisation method used by optim, default is BFGS}
-
 \item{tau}{The quantile for the reparameterized distribution}
-
-\item{full}{If the return should be the entire list by optim or just the parameter
-estimations}
 
 \item{clvl}{The confidence level for calculating the confidence intervals. If NULL no confidence
 intervals will be calculated. Default in NULL.}
+
+\item{n_bootstrap}{The number of resamples for bootstrap correction. Default is NULL,
+so no boostrap correction occurs.}
 }
 \value{
 If clvl is set to NULL (default) and full is set to TRUE(default)
@@ -36,5 +34,7 @@ log-likelihood function as well.
 }
 \examples{
 estim_chen_rpr(rchen(100, c(0.7,7)), tau = 0.5)
+estim_chen_rpr(rchen(100, c(0.7,7)), tau = 0.5, clvl = 0.95)
+estim_chen_rpr(rchen(100, c(0.7,7)), tau = 0.5, clvl = 0.95, n_bootstrap = 100)
 
 }
