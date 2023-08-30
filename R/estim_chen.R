@@ -66,12 +66,12 @@ estim_chen <- function(y, clvl = NULL, n_bootstrap = NULL) {
       out <- list(t0 = boot_results$t0,
                   t = colMeans(boot_results$t),
                   ci = ci,
-                  non_convergent_iterations = error_count)
+                  non_convergent_samples = error_count)
 
     } else {
       out <- list(t0 = boot_results$t0,
                   t = colMeans(boot_results$t),
-                  non_convergent_iterations = error_count)
+                  non_convergent_samples = error_count)
     }
     return(out)
     #______________________________________NO_BOOTSTRAP_______________________________________
