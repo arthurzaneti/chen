@@ -4,7 +4,7 @@
 \alias{reg_chen}
 \title{Title}
 \usage{
-reg_chen(data, formula, tau = 0.5, stripped = F)
+reg_chen(data, formula, tau = 0.5, n_bootstrap = NULL)
 }
 \arguments{
 \item{data}{A data.frame(or coercible to data.frame)}
@@ -13,21 +13,12 @@ reg_chen(data, formula, tau = 0.5, stripped = F)
 
 \item{tau}{The quantile}
 
-\item{stripped}{Nothing yet...}
+\item{n_bootstrap}{The number of resamples for bootstrap correction. Default is NULL,
+so no boostrap correction occurs.}
 }
 \value{
 The linear model to predict the values of mu
 }
 \description{
 Title
-}
-\examples{
-a <- runif(100)
-b <- runif(100)
-form <- y ~ a + b
-true_reg_coefficients <- c(2, 1)
-mus <- exp(cbind(a, b) \%*\% matrix(true_reg_coefficients))
-df <- data.frame(a = a, b = b, y = rchen_rpr(100, list(0.7, mus), 0.3))
-reg_chen(df, form, tau = 0.3)
-
 }
