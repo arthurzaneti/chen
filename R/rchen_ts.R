@@ -91,7 +91,6 @@ rchen_ts <- function(n, intercept, lambda, ar_coef = NULL, ma_coef = NULL, reg_c
       eta[i] <- intercept + (ar_coef %*% (ynew[i - ar]))
       mu[i] <- exp(eta[i])
       y[i] <- chen::rchen_rpr(1, c(lambda, mu[i]))
-      print(y[i])
       ynew[i] <- log(y[i])
 
     }
@@ -102,7 +101,7 @@ rchen_ts <- function(n, intercept, lambda, ar_coef = NULL, ma_coef = NULL, reg_c
   else if(case == "MA") {
 
     ynew <-rep(intercept, (n + buffer))
-    mu <- exp(ynew)
+
 
     eta <- y <- error <- rep(0, n + buffer)
     X <- cbind(sin(2 * pi * (1:(n + buffer)) / 50))
@@ -115,27 +114,81 @@ rchen_ts <- function(n, intercept, lambda, ar_coef = NULL, ma_coef = NULL, reg_c
       ynew[i] <- log(y[i])
       error[i]<- ynew[i] - eta[i]
     }
-    return(stats::ts(y[(buffer + 1):(n + buffer)], frequency = freq) )
+    return(stats::ts(y[(buffer + 1):(n + buffer)], frequency = freq))
   }
   #______________________________________REG ARMA_________________________________________
-  if(case == "REG_ARMA"){
+  else if(case == "REG_ARMA"){
 
     maxx = max(p, q)
 
     ynew <-rep(intercept, (n + buffer))
     mu <- exp(ynew)
+    # We have a problem with generating a buffer in the regression case
+    # We only have n rows of covariables, but we need to generate n + buffer values
+    # My idea was to add buffer rows to the beggining of the cvar matrice with the mean of each column,
+    # Really just a choice here, don't know if it makes any sense
+    cvar_buffered <- rbind(matrix(rep(colMeans(cvar), buffer),
+                                  nrow = buffer,
+                                  byrow = T),
+                           cvar)
 
     error <- rep(0, n + buffer) # E(error)=0
     eta <- y <- NULL
     for(i in (maxx + 1):(n + buffer))
     {
-      eta[i] <- intercept + (ar_coef %*% (ynew[i - ar])) + (ma_coef %*% error[i - ma])
+      eta[i] <- intercept + (ar_coef %*% (ynew[i - ar])) + (ma_coef %*% error[i - ma]) + (reg_coef %*% cvar_buffered[i, ])
       mu[i] <- exp(eta[i])
       y[i] <- chen::rchen_rpr(1, c(lambda, mu[i]))
       ynew[i] <- log(y[i])
       error[i] <- ynew[i] - eta[i]
     }
     return(stats::ts(y[(buffer + 1) : (n + buffer)], frequency = freq) )
+  }
+  #_________________________________________REG_AR________________________________________
+
+  else if(case == "REG_AR"){
+
+    ynew <- rep(intercept, (n + buffer))
+    mu <- exp(ynew)
+    cvar_buffered <- rbind(matrix(rep(colMeans(cvar), buffer),
+                                  nrow = buffer,
+                                  byrow = T),
+                           cvar)
+
+    eta <- y <- NULL
+
+    eta <- intercept + (ar_coef%*%(ynew[(p+1)-ar]))
+    muu <- exp(eta)
+
+    for(i in (p+1):(n+buffer))
+    {
+      eta[i] <- intercept + (ar_coef %*% (ynew[i - ar])) + (reg_coef %*% cvar_buffered[i, ])
+      mu[i] <- exp(eta[i])
+      y[i] <- chen::rchen_rpr(1, c(lambda, mu[i]))
+      ynew[i] <- log(y[i])
+
+    }
+    return(stats::ts(y[(buffer + 1):(n + buffer)], frequency = freq) )
+  }
+  #_________________________________________REG_MA________________________________________
+
+  else if(case == "REG_MA") {
+
+    ynew <-rep(intercept, (n + buffer))
+
+
+    eta <- y <- error <- rep(0, n + buffer)
+    X <- cbind(sin(2 * pi * (1:(n + buffer)) / 50))
+
+    for(i in (q + 1):(n + buffer))
+    {
+      eta[i] <- intercept + (ma_coef %*% error[i - ma])
+      mu[i] <- exp(eta[i])
+      y[i] <- chen::rchen_rpr(1, c(lambda, mu[i]))
+      ynew[i] <- log(y[i])
+      error[i]<- ynew[i] - eta[i]
+    }
+    return(stats::ts(y[(buffer + 1):(n + buffer)], frequency = freq))
   }
 }
 
