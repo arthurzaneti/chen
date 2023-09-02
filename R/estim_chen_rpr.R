@@ -79,7 +79,7 @@ estim_chen_rpr <- function(y, tau = 0.5, clvl = NULL, n_bootstrap = NULL){
 #______________________________________NO_BOOTSTRAP_______________________________________
   } else{
     suppressWarnings(estim <- stats::optim(par = c(0.7, 5),
-                                           fn = log_likelihood_rpr,
+                                           fn = chen::ll_chen_rpr,
                                            y = y,
                                            tau = tau,
                                            method = "BFGS",
@@ -102,12 +102,3 @@ estim_chen_rpr <- function(y, tau = 0.5, clvl = NULL, n_bootstrap = NULL){
   }
 }
 
-log_likelihood_rpr <- function(y, theta, tau){
-  lambda <- theta[1]
-  mu <- theta[2]
-  n <- length(y)
-  ll <- suppressWarnings(sum((log(log(1 - tau) / (1 - exp(mu^lambda))) +
-                           log(lambda) + (lambda - 1) * log(y) +
-                           (log(1 - tau) / (1 - exp(mu^lambda))) * (1 - exp(y^lambda)) + (y^lambda))))
-  return(ll)
-}

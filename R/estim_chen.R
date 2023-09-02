@@ -77,7 +77,7 @@ estim_chen <- function(y, clvl = NULL, n_bootstrap = NULL) {
     #______________________________________NO_BOOTSTRAP_______________________________________
   } else{
     suppressWarnings(estim <- stats::optim(par = c(1, 0.3),
-                                           fn = log_likelihood,
+                                           fn = chen::ll_chen,
                                            y = y,
                                            method = "BFGS",
                                            hessian = TRUE,

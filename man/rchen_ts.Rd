@@ -4,7 +4,16 @@
 \alias{rchen_ts}
 \title{Random generation}
 \usage{
-rchen_ts(n, intercept, lambda, ar_coef = NULL, ma_coef = NULL, freq = 1)
+rchen_ts(
+  n,
+  intercept,
+  lambda,
+  ar_coef = NULL,
+  ma_coef = NULL,
+  reg_coef = NULL,
+  cvar = NULL,
+  freq = 1
+)
 }
 \arguments{
 \item{n}{Number of random values}
