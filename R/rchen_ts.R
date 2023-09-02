@@ -18,7 +18,7 @@
 #' rchen_ts(100, 1, 0.7, ar_coef = c(0.5, 0.3), ma_coef = c(0.3, 0.1))
 #'
 rchen_ts <- function(n, intercept, lambda, ar_coef = NULL, ma_coef = NULL, reg_coef = NULL, cvar = NULL, freq = 1) {
-  tryCatch(cvar <- as.matrix(cvar) , error = function(e) stop("The value sent for cvar is not coercible to matrix"))
+  if(!is.null(cvar)) tryCatch(cvar <- as.matrix(cvar) , error = function(e) stop("The value sent for cvar is not coercible to matrix"))
   checkmate::assert_integerish(n, lower = 1)
   checkmate::assert_number(lambda, lower = 0)
   checkmate::assert_numeric(ar_coef, null.ok = T)
@@ -101,7 +101,7 @@ rchen_ts <- function(n, intercept, lambda, ar_coef = NULL, ma_coef = NULL, reg_c
   else if(case == "MA") {
 
     ynew <-rep(intercept, (n + buffer))
-
+    mu <- exp(ynew)
 
     eta <- y <- error <- rep(0, n + buffer)
     X <- cbind(sin(2 * pi * (1:(n + buffer)) / 50))
