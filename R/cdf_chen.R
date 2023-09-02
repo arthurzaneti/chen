@@ -25,12 +25,13 @@
 #' curve(cdf_chen(x, theta = c(1, 0.0001)),
 #'       from = 0, to = 100, xlab = "y", ylab = "cdf", n = 1000)
 
-cdf_chen <- function(y, theta){
+cdf_chen <- function(y, theta, lower_tail = T){
   checkmate::assert_numeric(y, lower = 0)
   theta <- as.vector(unlist(theta))
   checkmate::assert_numeric(theta, len = 2, lower = 0)
   #__________________________________end_checks_________________________________
   lambda <- theta[1]
   delta <- theta[2]
-  cdf <- 1 - exp(delta * (1 - exp(y ^ lambda)))
+  if(lower_tail) return(1 - exp(delta * (1 - exp(y ^ lambda))))
+  else return(exp(delta * (1 - exp(y ^ lambda))))
 }

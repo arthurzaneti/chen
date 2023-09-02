@@ -98,16 +98,6 @@ estim_chen <- function(y, clvl = NULL, n_bootstrap = NULL) {
     return(out)
   }
 }
-#____________________________________________________________________________________________________
-log_likelihood <- function(y, theta){
-
-  lambda <- theta[1]
-  delta <- theta[2]
-  n <- length(y)
-  ll <- n * log(delta) + n * log(lambda) +
-    sum((lambda - 1) * log(y) + delta * (1 - exp(y^lambda)) + y^lambda)
-  return(ll)
-}
 
 
 

@@ -28,7 +28,7 @@
 #'       from = 0, to = 20, xlab = "y", ylab = "cdf", n = 1000)
 
 
-cdf_chen_rpr <- function(y, theta, tau = 0.5){
+cdf_chen_rpr <- function(y, theta, tau = 0.5, lower_tail = T){
   checkmate::assert_numeric(y, lower = 0)
   theta <- as.vector(unlist(theta))
   checkmate::assert_numeric(theta, len = 2, lower = 0)
@@ -38,5 +38,6 @@ cdf_chen_rpr <- function(y, theta, tau = 0.5){
 
   lambda <- theta[1]
   mu <- theta[2]
-  cdf_rpr <- 1 - exp((log(1 - tau) / (1 - exp(mu ^ lambda))) * (1 - exp(y ^ lambda)))
+  if(lower_tail) return(1 - exp((log(1 - tau) / (1 - exp(mu ^ lambda))) * (1 - exp(y ^ lambda))))
+  else return(exp((log(1 - tau) / (1 - exp(mu ^ lambda))) * (1 - exp(y ^ lambda))))
 }
