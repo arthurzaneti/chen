@@ -1,16 +1,15 @@
-dchen <- function (x, theta, log = FALSE){
-
-  if(log) return(chen::ll_chen(x, theta))
-  else return(chen::pdf_chen(x, theta))
-  n <- length(y)
-}
-
-pchen <- function (x, b = 1, lambda = 1, log.p = FALSE, lower.tail = TRUE){
-  if(!log.p && lower.tail) return(1 - exp(lambda - lambda * exp(x**b)))
-  if(!log.p && !lower.tail) return(exp(lambda - lambda * exp(x**b)))
-  if(log.g && lower.tail) return(log(1 - exp(lambda - lambda * exp(x**b))))
-  if(log.p && !lower.tail) return(lambda - lambda * exp(x**b))
-}
+#' Title
+#'
+#' @param y
+#' @param ar
+#' @param ma
+#' @param cvar
+#' @param tau
+#'
+#' @return
+#' @export
+#'
+#' @examples
 
 reg_chen_ts <- function(y, ar = NULL, ma = NULL, cvar = NULL, tau = 0.5){
   if(!any(is.null(cvar))) cvar <- as.matrix(cvar)
@@ -83,6 +82,37 @@ reg_chen_ts <- function(y, ar = NULL, ma = NULL, cvar = NULL, tau = 0.5){
 }
 
 ARMA <- function(lambda, start, y, n, n_fit, y_cut, log_y, log_y_cut, max_arma, max_ar, max_ma){
+
+  names_phi<-c(paste("phi",ar,sep=""))
+  names_par <- c("beta0",names_phi,"lambda")
+
+  opt <- stats::optim(c(start, lambda),
+                      chen::ll_ARMA,
+                      hessian = T,
+                      method = "BFGS",
+                      control = list(fnscale = -1))
+
+  model <- list()
+  coef <-c(opt$par)[1:(n_ar+2)]
+  names(coef) <- names_par
+  model$coef <- coef
+  model$beta0 <- beta0 <- coef[1]
+  model$phi <- phi <- coef[2:(n_ar + 1)]
+  model$rho <- rho <- coef[(n_ar + 2): (n_ar + n_ma + 1)]
+  model$lambda <- lambda <- coef[(n_ar + n_ma + 2)]
+  model$hessian <- opt$hessian
+  model$fitted <- c(rep(NA, max_arma), y_cut)
+
+  errorhat <- rep(0, n)
+  etahat <- rep(NA, n)
+
+  for(i in (max_arma + 1):n){
+    etahat[i] <- beta0 + (phi %*% y_cut[i - ar]) + (rho %*% errorhat[i - ma])
+    errorhat[i] <- y_cut[i] - etahat[i]
+  }
+  model$fitted <- ts(c(rep(NA, m), muhat), start = start(y), frequency = frequency(y))
+  model$etahat <- etahat
+  model$errorhat <- errorhat
 
 }
 AR <- function(){

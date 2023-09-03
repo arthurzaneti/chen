@@ -4,7 +4,7 @@
 \alias{cdf_chen_rpr}
 \title{The Cumulative Distribution Function of the Reparameterized Chen Distribution}
 \usage{
-cdf_chen_rpr(y, theta, tau = 0.5)
+cdf_chen_rpr(y, theta, tau = 0.5, lower_tail = T)
 }
 \arguments{
 \item{y}{A numeric. The input of the mathematical function}
