@@ -30,7 +30,7 @@
 pdf_chen <- function(y, theta){
   checkmate::assert_numeric(y, lower = 0)
   theta <- as.vector(unlist(theta))
-  checkmate::assert_numeric(theta, len = 2, lower = 0)
+  checkmate::assert_numeric(theta, lower = 0)
   #__________________________________end_checks_________________________________
 
   lambda <- theta[1]

@@ -4,7 +4,7 @@
 \alias{cdf_chen}
 \title{The Cumulative Distribution Function of the Chen Distribution}
 \usage{
-cdf_chen(y, theta)
+cdf_chen(y, theta, lower_tail = T)
 }
 \arguments{
 \item{y}{A numeric. The input of the mathematical function}

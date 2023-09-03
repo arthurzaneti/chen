@@ -32,13 +32,14 @@
 pdf_chen_rpr <- function(y, theta, tau = 0.5){
   checkmate::assert_numeric(y, lower = 0)
   theta <- as.vector(unlist(theta))
-  checkmate::assert_numeric(theta, len = 2, lower = 0)
+  checkmate::assert_numeric(theta, lower = 0)
   checkmate::assert_number(tau, lower = 0, upper = 1)
+  checkmate::assert_true(length(theta) == 2 || length(theta) == length(y) + 1)
 
   #__________________________________end_checks_________________________________
 
   lambda <- theta[1]
-  mu <- theta[2]
+  mu <- theta[2 : length(theta)]
   return((log(1 - tau) / (1 - exp(mu ^ lambda))) * lambda * y ^ (lambda - 1) *
     exp((log(1 - tau) / (1 - exp(mu ^ lambda))) * (1 - exp(y ^ lambda)) + y ^ lambda))
 }

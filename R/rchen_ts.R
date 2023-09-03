@@ -36,23 +36,7 @@ rchen_ts <- function(n, intercept, lambda, ar_coef = NULL, ma_coef = NULL, reg_c
     q <- length(ma)
   }
 
-  if(is.null(reg_coef)){
-    if(!is.null(ar_coef) && !is.null(ma_coef)) case <- "ARMA"
-    else if(!is.null(ar_coef)) case <- "AR"
-    else if(!is.null(ma_coef)) case <- "MA"
-    else{
-      stop("No values for ar_coef or ma_coef provided")
-    }
-
-  }else{
-    if(!is.null(ar_coef) && !is.null(ma_coef)) case <- "REG_ARMA"
-    else if(!is.null(ar_coef)) case <- "REG_AR"
-    else if(!is.null(ma_coef)) case <- "REG_MA"
-    else{
-      stop("No values for ar_coef or ma_coef provided")
-    }
-  }
-
+  case <- chen::arma_case(!is.null(ar_coef), !is.null(ma_coef), !is.null(reg_coef))
   buffer <- 50
   #_________________________________________ARMA____________________________________________
   if(case == "ARMA"){
