@@ -67,6 +67,7 @@ arma_case <- function(isar, isma, isreg){
 #' @examples
 
 ll_ARMA <- function(y, y_cut, log_y, theta, n, n_ar, n_ma, ar, ma, max_arma, tau){
+  print(theta)
   beta0 <- theta[1]
   phi <- theta[2:(n_ar + 1)]
   rho <- theta[(n_ar + 2):(n_ar + n_ma + 1)]

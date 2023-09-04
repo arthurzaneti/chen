@@ -105,7 +105,7 @@ ARMA <- function(y, ar, ma, tau){
   #___________________________________
   names_phi <- c(paste("phi", ar, sep = ""))
   names_rho <- c(paste("rho", ma, sep = ""))
-  names_par <- c("intercept", names_phi, "lambda")
+  names_par <- c("intercept", names_phi, names_rho, "lambda")
 
   opt <- stats::optim(c(mqo, rep(0, n_ma), 0.7),
                       chen::ll_ARMA,
@@ -115,10 +115,9 @@ ARMA <- function(y, ar, ma, tau){
                       hessian = T,
                       method = "BFGS",
                       control = list(fnscale = -1))
-  print(mqo)
-  print(opt$par)
+
   model <- list()
-  coef <-c(opt$par)[1:(max_ar + max_ma)]
+  coef <-opt$par
   names(coef) <- names_par
   model$coef <- coef
   model$beta0 <- beta0 <- coef[1]
