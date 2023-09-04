@@ -86,6 +86,7 @@ ll_ARMA <- function(y, y_cut, log_y, theta, n, n_ar, n_ma, ar, ma, max_arma, tau
   sum(chen::ll_chen_rpr_ts(y_cut, c(lambda, mus), tau))
 }
 
+#______________________________________________________________________________________________________
 #' Title
 #'
 #' @param y
@@ -105,8 +106,6 @@ ll_ARMA <- function(y, y_cut, log_y, theta, n, n_ar, n_ma, ar, ma, max_arma, tau
 #'
 #' @examples
 
-#______________________________________________________________________________________________________
-
 ll_AR <- function(y, y_cut, log_y, theta, n, n_ar, ar, max_ar, tau){
   beta0 <- theta[1]
   phi <- theta[2:(n_ar + 1)]
@@ -119,6 +118,42 @@ ll_AR <- function(y, y_cut, log_y, theta, n, n_ar, ar, max_ar, tau){
     error[i] <- log_y[i] - eta[i]
   }
   mus <- exp(eta[(max_ar + 1) : n])
+
+  # Evaluating the ll function
+  sum(chen::ll_chen_rpr_ts(y_cut, c(lambda, mus), tau))
+}
+
+#______________________________________________________________________________________________________
+#' Title
+#'
+#' @param y
+#' @param y_cut
+#' @param log_y
+#' @param theta
+#' @param n
+#' @param n_ma
+#' @param ma
+#' @param max_ma
+#' @param tau
+#'
+#' @return
+#' @export
+#'
+#' @examples
+
+ll_MA <- function(y, y_cut, log_y, theta, n, n_ma, ma, max_ma, tau){
+  beta0 <- theta[1]
+  rho <- theta[2:(n_ma + 1)]
+  lambda <- theta[n_ma + 2]
+  error <- eta <- numeric(n)
+
+  # Generating the mus
+  for(i in (max_ma + 1):n) {
+    eta[i] <- beta0 + (rho %*% error[i - ma])
+    error[i] <- log_y[i] - eta[i]
+  }
+
+  mus <- exp(eta[(max_ma + 1) : n])
 
   # Evaluating the ll function
   sum(chen::ll_chen_rpr_ts(y_cut, c(lambda, mus), tau))

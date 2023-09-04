@@ -24,9 +24,9 @@ reg_chen_ts <- function(y, ar = NULL, ma = NULL, cvar = NULL, tau = 0.5){
   case <- chen::arma_case(isar, isma, isreg)
 
   return(switch(case,
-                "ARMA" = ARMA(y, ar, ma, tau), #max_ar, max_ma, ar, ma, max_arma, tau, mqo,
+                "ARMA" = ARMA(y, ar, ma, tau),
                 "AR" = AR(y, ar, tau),
-                "MA" = MA(),
+                "MA" = MA(y, ma, tau),
                 "REG_ARMA" = REG_ARMA(),
                 "REG_AR" = REG_AR(),
                 "REG_MA" = REG_MA()))
@@ -155,7 +155,59 @@ AR <- function(y, ar, tau){
   return(model)
 
 }
-MA <- function(){
+#_______________________________________________________________________________________
+
+MA <- function(y, ma, tau){
+  log_y <- log(y)
+  max_ma <- max(ma)
+  n <- length(y)
+  n_fit <- n - max_ma
+  n_ma <- length(ma)
+  y_cut<- y[(max_ma + 1): n]
+  log_y_cut <- log_y[(max_ma + 1): n]
+
+  mat <- matrix(rep(1, n_fit))
+  opt <- stats::lm.fit(mat, log_y_cut)
+  mqo <- stats::coef(opt)
+
+  #___________________________________
+  names_rho <- c(paste("rho", ma, sep = ""))
+  names_par <- c("intercept", names_rho, "lambda")
+
+  opt <- stats::optim(c(mqo, rep(0, n_ma), 0.7),
+                      chen::ll_MA,
+                      y = y, y_cut = y_cut, log_y = log_y, n = n,
+                      n_ma = n_ma, max_ma = max_ma,
+                      ma = ma, tau = tau,
+                      hessian = T,
+                      method = "BFGS",
+                      control = list(fnscale = -1))
+
+  model <- list()
+  coef <-opt$par
+  names(coef) <- names_par
+  model$coef <- coef
+  model$beta0 <- beta0 <- coef[1]
+  model$phi <- rho <- coef[2:(max_ma + 1)]
+  model$lambda <- lambda <- coef[(max_ma + 2)]
+  model$hessian <- opt$hessian
+  model$fitted <- c(rep(NA, max_ma), y_cut)
+
+  errorhat <- rep(0, n)
+  etahat <- rep(NA, n)
+
+  for(i in (max_ma + 1):n){
+    etahat[i] <- beta0 + (rho %*% errorhat[i - ma])
+    errorhat[i] <- log_y[i] - etahat[i]
+  }
+
+  muhat <- exp(etahat[(max_ma + 1):n])
+  model$fitted <- ts(c(rep(NA, max_ma), muhat), start = start(y), frequency = frequency(y))
+  model$etahat <- etahat
+  model$errorhat <- errorhat
+  model$case <- "MA"
+  class(model) <- "CHARMA_reg"
+  return(model)
 
 }
 REG_ARMA <- function(){
