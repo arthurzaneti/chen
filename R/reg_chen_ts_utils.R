@@ -10,14 +10,12 @@
 #'
 #' @examples
 pdf_chen_rpr_ts <- function(y, theta, tau){
-  #__________________________________end_checks_________________________________
-
   lambda <- theta[1]
   mu <- theta[2 : length(theta)]
   return((log(1 - tau) / (1 - exp(mu ^ lambda))) * lambda * y ^ (lambda - 1) *
            exp((log(1 - tau) / (1 - exp(mu ^ lambda))) * (1 - exp(y ^ lambda)) + y ^ lambda))
 }
-
+#________________________________________________________________________________________________
 #' Title
 #'
 #' @param isma
@@ -30,7 +28,7 @@ pdf_chen_rpr_ts <- function(y, theta, tau){
 #'
 #' @examples
 #'
-
+#________________________________________________________________________________________________
 arma_case <- function(isar, isma, isreg){
   if(!isreg){
     if(isar && isma) case <- "ARMA"
@@ -46,6 +44,7 @@ arma_case <- function(isar, isma, isreg){
   }
   return(case)
 }
+#________________________________________________________________________________________________
 
 #' Title
 #'
@@ -67,15 +66,14 @@ arma_case <- function(isar, isma, isreg){
 #' @examples
 
 ll_ARMA <- function(y, y_cut, log_y, theta, n, n_ar, n_ma, ar, ma, max_arma, tau){
-  print(theta)
   beta0 <- theta[1]
   phi <- theta[2:(n_ar + 1)]
   rho <- theta[(n_ar + 2):(n_ar + n_ma + 1)]
-  lambda <- theta[n_ar +n_ma + 2]
+  lambda <- theta[n_ar + n_ma + 2]
   error <- eta <- numeric(n)
 
   for(i in (max_arma + 1):n) { # Don't really know if we can avoid the for loop in here, I use the indice in to many places
-    eta[i] <- beta0 + (phi%*%log_y[i - ar]) + (rho%*%error[i - ma])
+    eta[i] <- beta0 + (phi %*% log_y[i - ar]) + (rho %*% error[i - ma])
     error[i] <- log_y[i] - eta[i]
   }
 

@@ -100,7 +100,6 @@ ARMA <- function(y, ar, ma, tau){
   mat <- cbind(rep(1, n_fit), mat)
   opt <- stats::lm.fit(mat, log_y_cut)
   mqo <- stats::coef(opt)
-  n_par <- length(mqo)
 
   #___________________________________
   names_phi <- c(paste("phi", ar, sep = ""))
@@ -131,9 +130,10 @@ ARMA <- function(y, ar, ma, tau){
   etahat <- rep(NA, n)
 
   for(i in (max_arma + 1):n){
-    etahat[i] <- beta0 + (phi %*% y_cut[i - ar]) + (rho %*% errorhat[i - ma])
-    errorhat[i] <- y_cut[i] - etahat[i]
+    etahat[i] <- beta0 + (phi %*% log_y[i - ar]) + (rho %*% errorhat[i - ma])
+    errorhat[i] <- log_y[i] - etahat[i]
   }
+
   muhat <- exp(etahat[(max_arma + 1):n])
   model$fitted <- ts(c(rep(NA, max_arma), muhat), start = start(y), frequency = frequency(y))
   model$etahat <- etahat
