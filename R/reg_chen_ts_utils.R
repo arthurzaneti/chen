@@ -9,11 +9,14 @@
 #' @export
 #'
 #' @examples
-pdf_chen_rpr_ts <- function(y, theta, tau){
+ll_chen_rpr_ts <- function(y, theta, tau){
   lambda <- theta[1]
-  mu <- theta[2 : length(theta)]
-  return((log(1 - tau) / (1 - exp(mu ^ lambda))) * lambda * y ^ (lambda - 1) *
-           exp((log(1 - tau) / (1 - exp(mu ^ lambda))) * (1 - exp(y ^ lambda)) + y ^ lambda))
+  mu <- theta[2:length(theta)]
+  n <- length(y)
+  ll <- suppressWarnings(sum((log(log(1 - tau) / (1 - exp(mu^lambda))) +
+                                log(lambda) + (lambda - 1) * log(y) +
+                                (log(1 - tau) / (1 - exp(mu^lambda))) * (1 - exp(y^lambda)) + (y^lambda))))
+  return(ll)
 }
 #________________________________________________________________________________________________
 #' Title
@@ -72,11 +75,13 @@ ll_ARMA <- function(y, y_cut, log_y, theta, n, n_ar, n_ma, ar, ma, max_arma, tau
   lambda <- theta[n_ar + n_ma + 2]
   error <- eta <- numeric(n)
 
+  # Generating the mus
   for(i in (max_arma + 1):n) { # Don't really know if we can avoid the for loop in here, I use the indice in to many places
     eta[i] <- beta0 + (phi %*% log_y[i - ar]) + (rho %*% error[i - ma])
     error[i] <- log_y[i] - eta[i]
   }
-
   mus <- exp(eta[(max_arma + 1) : n])
-  sum(chen::pdf_chen_rpr_ts(y_cut, c(lambda, mus), tau))
+
+  # Evaluating the ll function
+  sum(chen::ll_chen_rpr_ts(y_cut, c(lambda, mus), tau))
 }
