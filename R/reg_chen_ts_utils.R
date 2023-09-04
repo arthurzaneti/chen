@@ -76,11 +76,49 @@ ll_ARMA <- function(y, y_cut, log_y, theta, n, n_ar, n_ma, ar, ma, max_arma, tau
   error <- eta <- numeric(n)
 
   # Generating the mus
-  for(i in (max_arma + 1):n) { # Don't really know if we can avoid the for loop in here, I use the indice in to many places
+  for(i in (max_arma + 1):n) {
     eta[i] <- beta0 + (phi %*% log_y[i - ar]) + (rho %*% error[i - ma])
     error[i] <- log_y[i] - eta[i]
   }
   mus <- exp(eta[(max_arma + 1) : n])
+
+  # Evaluating the ll function
+  sum(chen::ll_chen_rpr_ts(y_cut, c(lambda, mus), tau))
+}
+
+#' Title
+#'
+#' @param y
+#' @param y_cut
+#' @param log_y
+#' @param theta
+#' @param n
+#' @param n_ar
+#' @param n_ma
+#' @param ar
+#' @param ma
+#' @param max_arma
+#' @param tau
+#'
+#' @return
+#' @export
+#'
+#' @examples
+
+#______________________________________________________________________________________________________
+
+ll_AR <- function(y, y_cut, log_y, theta, n, n_ar, ar, max_ar, tau){
+  beta0 <- theta[1]
+  phi <- theta[2:(n_ar + 1)]
+  lambda <- theta[n_ar + 2]
+  error <- eta <- numeric(n)
+
+  # Generating the mus
+  for(i in (max_ar + 1):n) {
+    eta[i] <- beta0 + (phi %*% log_y[i - ar])
+    error[i] <- log_y[i] - eta[i]
+  }
+  mus <- exp(eta[(max_ar + 1) : n])
 
   # Evaluating the ll function
   sum(chen::ll_chen_rpr_ts(y_cut, c(lambda, mus), tau))
