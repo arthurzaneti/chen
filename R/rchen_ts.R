@@ -9,7 +9,7 @@
 #'
 #' @importFrom stats ts
 #' @import checkmate
-#' @return A time serie object with the generated values
+#' @return A time series object with the generated values
 #' @export
 #'
 #' @examples
