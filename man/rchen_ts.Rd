@@ -29,7 +29,7 @@ rchen_ts(
 \item{freq}{Parameter for the time.series object that is returned}
 }
 \value{
-A time serie object with the generated values
+A time series object with the generated values
 }
 \description{
 Random generation

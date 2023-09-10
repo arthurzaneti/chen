@@ -159,7 +159,7 @@ rchen_ts <- function(n, intercept, lambda, ar_coef = NULL, ma_coef = NULL, reg_c
   else if(case == "REG_MA") {
 
     ynew <-rep(intercept, (n + buffer))
-
+    mu <- exp(ynew)
 
     eta <- y <- error <- rep(0, n + buffer)
     X <- cbind(sin(2 * pi * (1:(n + buffer)) / 50))

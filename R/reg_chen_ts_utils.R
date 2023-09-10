@@ -182,17 +182,16 @@ ll_MA <- function(y, y_cut, log_y, theta, n, n_ma, ma, max_ma, tau){
 #' @examples
 
 ll_REG_ARMA <- function(y, y_cut, log_y, theta, n, n_ar, n_ma, ar, ma, max_arma, cvar, tau){
+  l <- length(theta) # auxiliary variable for the indices
   beta0 <- theta[1]
   phi <- theta[2:(n_ar + 1)]
   rho <- theta[(n_ar + 2):(n_ar + n_ma + 1)]
-  lambda <- theta[n_ar + n_ma + 2]
-  betas <- theta[n_ar + n_ma + 3: length(theta)]
+  betas <- theta[(n_ar + n_ma + 2): (l - 1)]
+  lambda <- theta[l]
   error <- eta <- numeric(n)
-  print(cvar)
-  print(theta)
   # Generating the mus
   for(i in (max_arma + 1):n) {
-    eta[i] <- beta0 + cvar[i, ] %*% as.matrix(betas) +
+    eta[i] <- beta0 +  cvar[i, ] %*% as.matrix(betas)   +
       (phi %*% (log_y[i - ar] - (cvar[i - ar, ] %*% as.matrix(betas)))) +
       (rho %*% error[i - ma])
     error[i] <- log_y[i] - eta[i]
@@ -204,3 +203,117 @@ ll_REG_ARMA <- function(y, y_cut, log_y, theta, n, n_ar, n_ma, ar, ma, max_arma,
 }
 
 #______________________________________________________________________________________________________
+
+#' Title
+#'
+#' @param y
+#' @param y_cut
+#' @param log_y
+#' @param theta
+#' @param n
+#' @param max_ar
+#' @param ar
+#' @param ma
+#' @param cvar
+#'
+#' @return
+#' @keywords internal
+#' @export
+#'
+#' @examples
+
+ll_REG_AR <- function(y, y_cut, log_y, theta, n, n_ar, ar, max_ar, cvar, tau){
+  l <- length(theta) # auxiliary variable for the indices
+  beta0 <- theta[1]
+  phi <- theta[2:(n_ar + 1)]
+  betas <- theta[(n_ar + 2): (l - 1)]
+  lambda <- theta[l]
+  error <- eta <- numeric(n)
+  # Generating the mus
+  for(i in (max_ar + 1):n) {
+    eta[i] <- beta0 +  cvar[i, ] %*% as.matrix(betas)   +
+      (phi %*% (log_y[i - ar] - (cvar[i - ar, ] %*% as.matrix(betas))))
+    error[i] <- log_y[i] - eta[i]
+  }
+  mus <- exp(eta[(max_ar + 1) : n])
+
+  # Evaluating the ll function
+  sum(chen::ll_chen_rpr_ts(y_cut, c(lambda, mus), tau))
+}
+#______________________________________________________________________________________________________
+
+#' Title
+#'
+#' @param y
+#' @param y_cut
+#' @param log_y
+#' @param theta
+#' @param n
+#' @param max_ar
+#' @param ar
+#' @param ma
+#' @param cvar
+#'
+#' @return
+#' @keywords internal
+#' @export
+#'
+#' @examples
+
+ll_REG_AR <- function(y, y_cut, log_y, theta, n, n_ar, ar, max_ar, cvar, tau){
+  l <- length(theta) # auxiliary variable for the indices
+  beta0 <- theta[1]
+  phi <- theta[2:(n_ar + 1)]
+  betas <- theta[(n_ar + 2): (l - 1)]
+  lambda <- theta[l]
+  error <- eta <- numeric(n)
+  # Generating the mus
+  for(i in (max_ar + 1):n) {
+    eta[i] <- beta0 +  cvar[i, ] %*% as.matrix(betas)   +
+      (phi %*% (log_y[i - ar] - (cvar[i - ar, ] %*% as.matrix(betas))))
+    error[i] <- log_y[i] - eta[i]
+  }
+  mus <- exp(eta[(max_ar + 1) : n])
+
+  # Evaluating the ll function
+  sum(chen::ll_chen_rpr_ts(y_cut, c(lambda, mus), tau))
+}
+
+#______________________________________________________________________________________________________
+
+#' Title
+#'
+#' @param y
+#' @param y_cut
+#' @param log_y
+#' @param theta
+#' @param n
+#' @param max_ma
+#' @param n_ma
+#' @param ma
+#' @param cvar
+#'
+#' @return
+#' @keywords internal
+#' @export
+#'
+#' @examples
+
+ll_REG_MA <- function(y, y_cut, log_y, theta, n, n_ma, ma, max_ma, cvar, tau){
+  l <- length(theta) # auxiliary variable for the indices
+  beta0 <- theta[1]
+  rho <- theta[2:(n_ma + 1)]
+  betas <- theta[(n_ma + 2): (l - 1)]
+  lambda <- theta[l]
+  error <- eta <- numeric(n)
+  # Generating the mus
+  for(i in (max_ma + 1):n) {
+    eta[i] <- beta0 +  cvar[i, ] %*% as.matrix(betas) +
+      (rho %*% error[i - ma])
+    error[i] <- log_y[i] - eta[i]
+  }
+  mus <- exp(eta[(max_ma + 1) : n])
+
+  # Evaluating the ll function
+  sum(chen::ll_chen_rpr_ts(y_cut, c(lambda, mus), tau))
+}
