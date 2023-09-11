@@ -87,7 +87,7 @@ ARMA <- function(y, ar, ma, tau){
   }
 
   muhat <- exp(etahat[(max_arma + 1):n])
-  model$fitted <- ts(c(rep(NA, max_arma), muhat), start = start(y), frequency = frequency(y))
+  model$fitted <- ts(c(rep(NA, max_arma), muhat), start = stats::start(y), frequency = stats::frequency(y))
   model$etahat <- etahat
   model$errorhat <- errorhat
   model$case <- "ARMA"
@@ -147,7 +147,7 @@ AR <- function(y, ar, tau){
   }
 
   muhat <- exp(etahat[(max_ar + 1):n])
-  model$fitted <- ts(c(rep(NA, max_ar), muhat), start = start(y), frequency = frequency(y))
+  model$fitted <- ts(c(rep(NA, max_ar), muhat), start = stats::start(y), frequency = stats::frequency(y))
   model$etahat <- etahat
   model$errorhat <- errorhat
   model$case <- "AR"
@@ -202,7 +202,7 @@ MA <- function(y, ma, tau){
   }
 
   muhat <- exp(etahat[(max_ma + 1):n])
-  model$fitted <- ts(c(rep(NA, max_ma), muhat), start = start(y), frequency = frequency(y))
+  model$fitted <- ts(c(rep(NA, max_ma), muhat), start = stats::start(y), frequency = stats::frequency(y))
   model$etahat <- etahat
   model$errorhat <- errorhat
   model$case <- "MA"
@@ -275,7 +275,7 @@ REG_ARMA <- function(y, ar, ma, cvar, tau){
   }
 
   muhat <- exp(etahat[(max_arma + 1):n])
-  model$fitted <- ts(c(rep(NA, max_arma), muhat), start = start(y), frequency = frequency(y))
+  model$fitted <- ts(c(rep(NA, max_arma), muhat), start = stats::start(y), frequency = stats::frequency(y))
   model$etahat <- etahat
   model$errorhat <- errorhat
   model$case <- "REG_ARMA"
@@ -343,7 +343,7 @@ REG_AR <- function(y, ar, cvar, tau){
   }
 
   muhat <- exp(etahat[(max_ar + 1):n])
-  model$fitted <- ts(c(rep(NA, max_ar), muhat), start = start(y), frequency = frequency(y))
+  model$fitted <- ts(c(rep(NA, max_ar), muhat), start = stats::start(y), frequency = stats::frequency(y))
   model$etahat <- etahat
   model$errorhat <- errorhat
   model$case <- "REG_AR"
@@ -403,7 +403,7 @@ REG_MA <- function(y, ma, cvar, tau){
   }
 
   muhat <- exp(etahat[(max_ma + 1):n])
-  model$fitted <- ts(c(rep(NA, max_ma), muhat), start = start(y), frequency = frequency(y))
+  model$fitted <- ts(c(rep(NA, max_ma), muhat), start = stats::start(y), frequency = stats::frequency(y))
   model$etahat <- etahat
   model$errorhat <- errorhat
   model$case <- "REG_MA"

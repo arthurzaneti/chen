@@ -2,23 +2,53 @@
 % Please edit documentation in R/reg_chen.R
 \name{reg_chen}
 \alias{reg_chen}
-\title{Title}
+\title{Regression for the reparameterized Chen distribution}
 \usage{
 reg_chen(data, formula, tau = 0.5, n_bootstrap = NULL)
 }
 \arguments{
-\item{data}{A data.frame(or coercible to data.frame)}
+\item{data}{A `data.frame`(or coercible to `data.frame` with `as.data.frame`)}
 
-\item{formula}{The formula for the regression}
+\item{formula}{An object of class `formula` which is gonna be used for fitting
+the model}
 
-\item{tau}{The quantile}
+\item{tau}{A number from zero to one (exclusive) which represents the quantile.}
 
 \item{n_bootstrap}{The number of resamples for bootstrap correction. Default is NULL,
-so no boostrap correction occurs.}
+so no bootstrap correction occurs.}
 }
 \value{
-The linear model to predict the values of mu
+An object of class `reg_chen` with the following attributes:
+\describe{
+  \item{\code{names}}{The names of the columns of the data frame used for fitting the
+  \code{reg_chen} model.}
+
+  \item{\code{coef0}}{The initial estimation of the coefficients before bootstrapping.
+  This attribute will only be present if a value of \code{n_bootstrap} is provided.
+  Useful for comparing the pre-bootstrap and post-bootstrap coefficients, but
+  all predictions should be done using \code{coef}.}
+
+  \item{\code{coef}}{The coefficients of the regression model. This is what is gonna
+  be used for predicting new data.}
+
+  \item{\code{lambda}}{The predicted value of the \eqn{\lambda} parameter in
+  reparameterized Chen distribution formula.}
+
+  \item{\code{tau}}{Simply the value provided as input for \code{tau}.}
+
+  \item{\code{non_convergent_samples}}{The number of bootstrap samples for which the
+  parameter estimation didn't converge, will only be present if \code{n_bootstrap}
+  is provided.}
+
+  \item{\code{formula}}{Simply the value provided as input for \code{formula}.}
+
+  \item{\code{y}}{The output variables used for prediction, will be a column of \code{data}.}
+
+  \item{\code{cvar}}{The covariables used for prediction, all columns of \code{data}.}
+
+  \item{\code{call}}{The matched function call.}
+}
 }
 \description{
-Title
+Used to fit a linear model for predicting the median of the Chen distribution
 }

@@ -2,14 +2,27 @@
 % Please edit documentation in R/reg_chen_ts_utils.R
 \name{arma_case}
 \alias{arma_case}
-\title{Title}
+\title{Determines the ARMA case}
 \usage{
 arma_case(isar, isma, isreg)
 }
 \arguments{
-\item{isreg}{}
+\item{isar}{A logical indicating if the model incorporates auto regression}
+
+\item{isma}{A logical indicating if the model incorporates moving averages}
+
+\item{isreg}{A logical indicating if the model incorporates regular regression
+(with covariables)}
+}
+\value{
+A string with the ARMA case
 }
 \description{
-Title
+Simply that determines the ARMA case between ARMA, AR, MA, REG_ARMA, REG_MA and
+REG_AR. This is an internal function.
+}
+\examples{
+# No need for examples in internal function
+
 }
 \keyword{internal}

@@ -1,13 +1,45 @@
-#' Title
+#' Regression for the reparameterized Chen distribution
 #'
-#' @param data A data.frame(or coercible to data.frame)
-#' @param formula The formula for the regression
-#' @param tau The quantile
+#' Used to fit a linear model for predicting the median of the Chen distribution
+#'
+#' @param data A `data.frame`(or coercible to `data.frame` with `as.data.frame`)
+#' @param formula An object of class `formula` which is gonna be used for fitting
+#'  the model
+#' @param tau A number from zero to one (exclusive) which represents the quantile.
 #' @param n_bootstrap The number of resamples for bootstrap correction. Default is NULL,
-#' so no boostrap correction occurs.
+#' so no bootstrap correction occurs.
 #'
-#' @return The linear model to predict the values of mu
+#' @return An object of class `reg_chen` with the following attributes:
+#' \describe{
+#'   \item{\code{names}}{The names of the columns of the data frame used for fitting the
+#'   \code{reg_chen} model.}
 #'
+#'   \item{\code{coef0}}{The initial estimation of the coefficients before bootstrapping.
+#'   This attribute will only be present if a value of \code{n_bootstrap} is provided.
+#'   Useful for comparing the pre-bootstrap and post-bootstrap coefficients, but
+#'   all predictions should be done using \code{coef}.}
+#'
+#'   \item{\code{coef}}{The coefficients of the regression model. This is what is gonna
+#'   be used for predicting new data.}
+#'
+#'   \item{\code{lambda}}{The predicted value of the \eqn{\lambda} parameter in
+#'   reparameterized Chen distribution formula.}
+#'
+#'   \item{\code{tau}}{Simply the value provided as input for \code{tau}.}
+#'
+#'   \item{\code{non_convergent_samples}}{The number of bootstrap samples for which the
+#'   parameter estimation didn't converge, will only be present if \code{n_bootstrap}
+#'   is provided.}
+#'
+#'   \item{\code{formula}}{Simply the value provided as input for \code{formula}.}
+#'
+#'   \item{\code{y}}{The output variables used for prediction, will be a column of \code{data}.}
+#'
+#'   \item{\code{cvar}}{The covariables used for prediction, all columns of \code{data}.}
+#'
+#'   \item{\code{call}}{The matched function call.}
+
+#' }
 #' @export
 #' @importFrom stats optim model.matrix lm.fit
 #' @import checkmate
@@ -59,7 +91,7 @@ reg_chen <- function(data, formula, tau = 0.5, n_bootstrap = NULL){ # For the re
   boot_results <- boot::boot(data = y, statistic = boot_func_reg, R = n_bootstrap, X = X, initial_par = initial_par) # Where the bootstrap actually occurs
   boot_results$t <- boot_results$t[!(boot_results$t[, 1] == -1), ]
   boot_results$R <- boot_results$R - error_count
-  # First part of the return
+
   pars <- colMeans(boot_results$t)
   model <- list()
   model$names <- colnames(X)
@@ -70,7 +102,7 @@ reg_chen <- function(data, formula, tau = 0.5, n_bootstrap = NULL){ # For the re
   model$non_convergent_samples <- error_count
   model$formula <- formula
   model$y <- y
-  model$X <- X
+  model$cvar <- X
   model$call <-  match.call()
   class(model) <- "reg_chen_model"
   return(model)
@@ -90,7 +122,6 @@ reg_chen <- function(data, formula, tau = 0.5, n_bootstrap = NULL){ # For the re
       The convergence value was: ", estim$convergence, ". Try looking at stats::optim documentation to see what this value means")
     }
   }
-  #First part of the return
   model <- list()
   model$names <- colnames(X)
   model$coef <- estim$par[2: length(estim$par)]
@@ -98,9 +129,9 @@ reg_chen <- function(data, formula, tau = 0.5, n_bootstrap = NULL){ # For the re
   model$tau <- tau
   model$formula <- formula
   model$y <- y
-  model$X <- X
+  model$cvar <- X
   model$call <-  match.call()
-  class(model) <- "reg_chen_model"
+  class(model) <- "reg_chen"
   return(model)
 }
 

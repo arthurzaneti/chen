@@ -1,37 +1,21 @@
-#' Title
+#' Determines the ARMA case
 #'
-#' @param y
-#' @param theta
-#' @param tau
+#' Simply that determines the ARMA case between ARMA, AR, MA, REG_ARMA, REG_MA and
+#' REG_AR. This is an internal function.
+#'
+#' @param isar A logical indicating if the model incorporates auto regression
+#' @param isma A logical indicating if the model incorporates moving averages
+#' @param isreg A logical indicating if the model incorporates regular regression
+#' (with covariables)
 #'
 #' @return
+#' A string with the ARMA case
 #' @keywords internal
 #' @export
 #'
 #' @examples
-ll_chen_rpr_ts <- function(y, theta, tau){
-  lambda <- theta[1]
-  mu <- theta[2:length(theta)]
-  n <- length(y)
-  ll <- suppressWarnings(sum((log(log(1 - tau) / (1 - exp(mu^lambda))) +
-                                log(lambda) + (lambda - 1) * log(y) +
-                                (log(1 - tau) / (1 - exp(mu^lambda))) * (1 - exp(y^lambda)) + (y^lambda))))
-  return(ll)
-}
-#________________________________________________________________________________________________
-#' Title
+#' # No need for examples in internal function
 #'
-#' @param isma
-#' @param isar
-#' @param isreg
-#'
-#' @return
-#' @keywords internal
-#' @export
-#'
-#' @examples
-#'
-#________________________________________________________________________________________________
 arma_case <- function(isar, isma, isreg){
   if(!isreg){
     if(isar && isma) case <- "ARMA"
@@ -48,26 +32,8 @@ arma_case <- function(isar, isma, isreg){
   return(case)
 }
 #________________________________________________________________________________________________
-
-#' Title
-#'
-#' @param y
-#' @param y_cut
-#' @param log_y
-#' @param theta
-#' @param n
-#' @param max_ar
-#' @param max_ma
-#' @param ar
-#' @param ma
-#' @param max_arma
-#'
-#' @return
-#' @keywords internal
-#' @export
-#'
-#' @examples
-
+#' @describeIn ll_REG_ARMA For the ARMA case
+#' @order 4
 ll_ARMA <- function(y, y_cut, log_y, theta, n, n_ar, n_ma, ar, ma, max_arma, tau){
   beta0 <- theta[1]
   phi <- theta[2:(n_ar + 1)]
@@ -83,29 +49,12 @@ ll_ARMA <- function(y, y_cut, log_y, theta, n, n_ar, n_ma, ar, ma, max_arma, tau
   mus <- exp(eta[(max_arma + 1) : n])
 
   # Evaluating the ll function
-  sum(chen::ll_chen_rpr_ts(y_cut, c(lambda, mus), tau))
+  sum(chen::ll_chen_rpr(y_cut, c(lambda, mus), tau))
 }
 
 #______________________________________________________________________________________________________
-#' Title
-#'
-#' @param y
-#' @param y_cut
-#' @param log_y
-#' @param theta
-#' @param n
-#' @param n_ar
-#' @param n_ma
-#' @param ar
-#' @param ma
-#' @param max_arma
-#' @param tau
-#'
-#' @return
-#' @export
-#'
-#' @examples
-
+#' @describeIn ll_REG_ARMA For the AR case
+#' @order 5
 ll_AR <- function(y, y_cut, log_y, theta, n, n_ar, ar, max_ar, tau){
   beta0 <- theta[1]
   phi <- theta[2:(n_ar + 1)]
@@ -120,27 +69,12 @@ ll_AR <- function(y, y_cut, log_y, theta, n, n_ar, ar, max_ar, tau){
   mus <- exp(eta[(max_ar + 1) : n])
 
   # Evaluating the ll function
-  sum(chen::ll_chen_rpr_ts(y_cut, c(lambda, mus), tau))
+  sum(chen::ll_chen_rpr(y_cut, c(lambda, mus), tau))
 }
 
 #______________________________________________________________________________________________________
-#' Title
-#'
-#' @param y
-#' @param y_cut
-#' @param log_y
-#' @param theta
-#' @param n
-#' @param n_ma
-#' @param ma
-#' @param max_ma
-#' @param tau
-#'
-#' @return
-#' @export
-#'
-#' @examples
-
+#' @describeIn ll_REG_ARMA For the ARMA case
+#' @order 6
 ll_MA <- function(y, y_cut, log_y, theta, n, n_ma, ma, max_ma, tau){
   beta0 <- theta[1]
   rho <- theta[2:(n_ma + 1)]
@@ -156,30 +90,39 @@ ll_MA <- function(y, y_cut, log_y, theta, n, n_ma, ma, max_ma, tau){
   mus <- exp(eta[(max_ma + 1) : n])
 
   # Evaluating the ll function
-  sum(chen::ll_chen_rpr_ts(y_cut, c(lambda, mus), tau))
+  sum(chen::ll_chen_rpr(y_cut, c(lambda, mus), tau))
 }
 
 #______________________________________________________________________________________________________
 
-#' Title
+#' Log-likelihood functions for time series
 #'
-#' @param y
-#' @param y_cut
-#' @param log_y
-#' @param theta
-#' @param n
-#' @param max_ar
-#' @param max_ma
-#' @param ar
-#' @param ma
-#' @param cvar
-#' @param max_arma
+#' All of the Log-likelihood functions used in reg_chen_ts. Used for optimization
+#' with \code{stats::optim}. These are internal functions.
 #'
-#' @return
+#' @param y All of the output variables
+#' @param y_cut \code{y} but without the first variables that can't be used for fitting
+#' @param log_y log of y
+#' @param theta The parameters supplied by \code{stats::optim}
+#' @param n Simply \code{length(y)}
+#' @param n_ar The number of terms used in the auto-regressive model. Note how this
+#' is different \code{max(ar)} since ar could be just \code{c(2)}.
+#' @param n_ma The number of terms used in the moving averages model
+#' @param ar The vector of indices representing auto-regressive dependency
+#' @param ma The vector of indices representing moving averages dependency
+#' @param max_arma The longest dependency in general
+#' @param cvar The covariables being used to fit the model
+#' @param tau Parameter used in the mathematical formula
+#'
+#' @return The output of the log-likelihood formula, that is, the likelihood of the given set
+#' of parameters given the output variables.
 #' @keywords internal
+#' @examples
+#' # No need for examples in internal function
+#' @order 1
 #' @export
 #'
-#' @examples
+#'
 
 ll_REG_ARMA <- function(y, y_cut, log_y, theta, n, n_ar, n_ma, ar, ma, max_arma, cvar, tau){
   l <- length(theta) # auxiliary variable for the indices
@@ -199,28 +142,13 @@ ll_REG_ARMA <- function(y, y_cut, log_y, theta, n, n_ar, n_ma, ar, ma, max_arma,
   mus <- exp(eta[(max_arma + 1) : n])
 
   # Evaluating the ll function
-  sum(chen::ll_chen_rpr_ts(y_cut, c(lambda, mus), tau))
+  sum(chen::ll_chen_rpr(y_cut, c(lambda, mus), tau))
 }
 
 #______________________________________________________________________________________________________
 
-#' Title
-#'
-#' @param y
-#' @param y_cut
-#' @param log_y
-#' @param theta
-#' @param n
-#' @param max_ar
-#' @param ar
-#' @param ma
-#' @param cvar
-#'
-#' @return
-#' @keywords internal
-#' @export
-#'
-#' @examples
+#' @describeIn ll_REG_ARMA For the REG_AR case
+#' @order 2
 
 ll_REG_AR <- function(y, y_cut, log_y, theta, n, n_ar, ar, max_ar, cvar, tau){
   l <- length(theta) # auxiliary variable for the indices
@@ -238,67 +166,12 @@ ll_REG_AR <- function(y, y_cut, log_y, theta, n, n_ar, ar, max_ar, cvar, tau){
   mus <- exp(eta[(max_ar + 1) : n])
 
   # Evaluating the ll function
-  sum(chen::ll_chen_rpr_ts(y_cut, c(lambda, mus), tau))
+  sum(chen::ll_chen_rpr(y_cut, c(lambda, mus), tau))
 }
 #______________________________________________________________________________________________________
 
-#' Title
-#'
-#' @param y
-#' @param y_cut
-#' @param log_y
-#' @param theta
-#' @param n
-#' @param max_ar
-#' @param ar
-#' @param ma
-#' @param cvar
-#'
-#' @return
-#' @keywords internal
-#' @export
-#'
-#' @examples
-
-ll_REG_AR <- function(y, y_cut, log_y, theta, n, n_ar, ar, max_ar, cvar, tau){
-  l <- length(theta) # auxiliary variable for the indices
-  beta0 <- theta[1]
-  phi <- theta[2:(n_ar + 1)]
-  betas <- theta[(n_ar + 2): (l - 1)]
-  lambda <- theta[l]
-  error <- eta <- numeric(n)
-  # Generating the mus
-  for(i in (max_ar + 1):n) {
-    eta[i] <- beta0 +  cvar[i, ] %*% as.matrix(betas)   +
-      (phi %*% (log_y[i - ar] - (cvar[i - ar, ] %*% as.matrix(betas))))
-    error[i] <- log_y[i] - eta[i]
-  }
-  mus <- exp(eta[(max_ar + 1) : n])
-
-  # Evaluating the ll function
-  sum(chen::ll_chen_rpr_ts(y_cut, c(lambda, mus), tau))
-}
-
-#______________________________________________________________________________________________________
-
-#' Title
-#'
-#' @param y
-#' @param y_cut
-#' @param log_y
-#' @param theta
-#' @param n
-#' @param max_ma
-#' @param n_ma
-#' @param ma
-#' @param cvar
-#'
-#' @return
-#' @keywords internal
-#' @export
-#'
-#' @examples
-
+#' @describeIn ll_REG_ARMA For the REG_MA case
+#' @order 3
 ll_REG_MA <- function(y, y_cut, log_y, theta, n, n_ma, ma, max_ma, cvar, tau){
   l <- length(theta) # auxiliary variable for the indices
   beta0 <- theta[1]
@@ -315,5 +188,5 @@ ll_REG_MA <- function(y, y_cut, log_y, theta, n, n_ma, ma, max_ma, cvar, tau){
   mus <- exp(eta[(max_ma + 1) : n])
 
   # Evaluating the ll function
-  sum(chen::ll_chen_rpr_ts(y_cut, c(lambda, mus), tau))
+  sum(chen::ll_chen_rpr(y_cut, c(lambda, mus), tau))
 }

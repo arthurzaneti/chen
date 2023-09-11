@@ -2,14 +2,73 @@
 % Please edit documentation in R/reg_chen_ts_utils.R
 \name{ll_REG_ARMA}
 \alias{ll_REG_ARMA}
-\title{Title}
+\alias{ll_REG_AR}
+\alias{ll_REG_MA}
+\alias{ll_ARMA}
+\alias{ll_AR}
+\alias{ll_MA}
+\title{Log-likelihood functions for time series}
 \usage{
 ll_REG_ARMA(y, y_cut, log_y, theta, n, n_ar, n_ma, ar, ma, max_arma, cvar, tau)
+
+ll_REG_AR(y, y_cut, log_y, theta, n, n_ar, ar, max_ar, cvar, tau)
+
+ll_REG_MA(y, y_cut, log_y, theta, n, n_ma, ma, max_ma, cvar, tau)
+
+ll_ARMA(y, y_cut, log_y, theta, n, n_ar, n_ma, ar, ma, max_arma, tau)
+
+ll_AR(y, y_cut, log_y, theta, n, n_ar, ar, max_ar, tau)
+
+ll_MA(y, y_cut, log_y, theta, n, n_ma, ma, max_ma, tau)
 }
 \arguments{
-\item{max_arma}{}
+\item{y}{All of the output variables}
+
+\item{y_cut}{\code{y} but without the first variables that can't be used for fitting}
+
+\item{log_y}{log of y}
+
+\item{theta}{The parameters supplied by \code{stats::optim}}
+
+\item{n}{Simply \code{length(y)}}
+
+\item{n_ar}{The number of terms used in the auto-regressive model. Note how this
+is different \code{max(ar)} since ar could be just \code{c(2)}.}
+
+\item{n_ma}{The number of terms used in the moving averages model}
+
+\item{ar}{The vector of indices representing auto-regressive dependency}
+
+\item{ma}{The vector of indices representing moving averages dependency}
+
+\item{max_arma}{The longest dependency in general}
+
+\item{cvar}{The covariables being used to fit the model}
+
+\item{tau}{Parameter used in the mathematical formula}
+}
+\value{
+The output of the log-likelihood formula, that is, the likelihood of the given set
+of parameters given the output variables.
 }
 \description{
-Title
+All of the Log-likelihood functions used in reg_chen_ts. Used for optimization
+with \code{stats::optim}. These are internal functions.
+}
+\section{Functions}{
+\itemize{
+\item \code{ll_REG_AR()}: For the REG_AR case
+
+\item \code{ll_REG_MA()}: For the REG_MA case
+
+\item \code{ll_ARMA()}: For the ARMA case
+
+\item \code{ll_AR()}: For the AR case
+
+\item \code{ll_MA()}: For the ARMA case
+
+}}
+\examples{
+# No need for examples in internal function
 }
 \keyword{internal}
