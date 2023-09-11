@@ -7,7 +7,7 @@
 rchen(n, theta)
 }
 \arguments{
-\item{n}{number of random values to generate}
+\item{n}{Number of random values to generate}
 
 \item{theta}{A length 2 vector, or coercible to vector, look at details for
 more information about the coersion. This will be the parameters of the distribution
@@ -20,7 +20,7 @@ A length n numeric vector.
 Random generation for the Chen distribution
 }
 \details{
-The coersion of theta to vector is done using `as.vector(unlist(theta))`
+The coercion of theta to vector is done using \code{as.vector(unlist(theta))}
 so lists and matrices will work, as long as they are length 2.
 }
 \examples{

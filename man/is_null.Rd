@@ -18,4 +18,8 @@ no way to, in base R, check if an entire vector is NULL. We would usually need t
 use any(is.null(vec)). I differed the syntax from base R's is.null by using an underscore
 instead of a . (is_null insteade of is.null)
 }
+\examples{
+# No need for examples in internal function
+
+}
 \keyword{internal}

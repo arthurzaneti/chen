@@ -7,24 +7,23 @@
 pdf_chen(y, theta)
 }
 \arguments{
-\item{y}{A numeric. The input of the mathematical function}
+\item{y}{The input of the mathematical function, if it is a vector, than the return will be a vector.}
 
-\item{theta}{A length 2 numeric vector, or coercible to vector using `as.vector(unlist())`,
+\item{theta}{A length 2 numeric vector, or coercible to vector using \code{as.vector(unlist(theta))},
 with the parameters.}
 }
 \value{
-A double representing the probability density at \code{y}
+A double, or vector of doubles, representing the probability density at \code{y}
 }
 \description{
 The mathematical function that describes the probability density for the Chen
  distribution. Its formula is \deqn{f(y|\lambda, \delta)= \delta\lambda
  y^{\lambda - 1} \exp \left\lbrace \delta \left[ 1-\exp(y^{\lambda})\right]
- +y^{\lambda} \right\rbrace  , \quad y>0.}
+ +y^{\lambda} \right\rbrace  , \quad y>0}
 }
 \examples{
-# same numbers as the pdf_chen function
-curve(pdf_chen(x, theta = c(0.4, 0.01)),
-      from = 0, to = 100, xlab = "y", ylab = "pdf", n = 1000)
+# same numbers as the cdf_chen function
+pdf_chen(1, theta = c(0.7, 0.2))
 curve(pdf_chen(x, theta = c(0.4, 0.1)),
       from = 0, to = 100, xlab = "y", ylab = "pdf", n = 1000)
 curve(pdf_chen(x, theta = c(0.7, 0.01)),

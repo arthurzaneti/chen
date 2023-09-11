@@ -1,12 +1,12 @@
 #' @title Random generation for the Chen distribution
 #'
-#' @param n number of random values to generate
+#' @param n Number of random values to generate
 #' @param theta A length 2 vector, or coercible to vector, look at details for
 #' more information about the coersion. This will be the parameters of the distribution
 #' .The first one is considered to be lambda and the second one to be delta
 #'
 #' @return A length n numeric vector.
-#' @details The coersion of theta to vector is done using `as.vector(unlist(theta))`
+#' @details The coercion of theta to vector is done using \code{as.vector(unlist(theta))}
 #' so lists and matrices will work, as long as they are length 2.
 #' @importFrom stats runif
 #' @import checkmate

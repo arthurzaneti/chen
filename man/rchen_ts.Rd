@@ -2,41 +2,54 @@
 % Please edit documentation in R/rchen_ts.R
 \name{rchen_ts}
 \alias{rchen_ts}
-\title{Random generation}
+\title{Random generation for the CHARMA model}
 \usage{
 rchen_ts(
   n,
-  intercept,
+  intercept = 0,
   lambda,
   ar_coef = NULL,
   ma_coef = NULL,
   reg_coef = NULL,
   cvar = NULL,
-  freq = 1
+  freq = 1,
+  tau = 0.5
 )
 }
 \arguments{
-\item{n}{Number of random values}
+\item{n}{Number of random values to generate}
 
 \item{intercept}{The formula's intercept}
-
-\item{lambda}{The distribution parameter lambda}
 
 \item{ar_coef}{The coefficients for the auto-regressive model}
 
 \item{ma_coef}{The coefficients for the moving averages model}
 
-\item{freq}{Parameter for the time.series object that is returned}
+\item{reg_coef}{The coefficients for the regression model, should only be provided
+if cvar is provided as well.}
+
+\item{cvar}{The covariables.}
+
+\item{freq}{Parameter for the \code{ts} object that is returned}
+
+\item{tau}{The quantile}
 }
 \value{
-A time series object with the generated values
+A \code{ts} object with the generated values and the specified frequency
 }
 \description{
-Random generation
+Generates random values following correlated through time according to the CHARMA
+model. Usually used for simulation together with \code{reg_chen_ts}.
+}
+\details{
+The values provided as the coefficients of the model will be coerced to vector
+using \code{as.vector(unlist(**_coef))}, if that is not possible an error will be generated.
+That means any type coercible to vector can be used. Similarly \code{as.matrix} is used to
+coerce cvar.
 }
 \examples{
 plot(rchen_ts(100, 1, 0.7, ar_coef = c(0.6, 0.1)))
 plot(rchen_ts(100, 1, 0.7, ma_coef = c(0.5, 0.2)))
-rchen_ts(100, 1, 0.7, ar_coef = c(0.5, 0.3), ma_coef = c(0.3, 0.1))
+rchen_ts(100, 1, 0.7, ar_coef = c(0.5, 0.3), ma_coef = c(0.3, 0.1), tau = 0.4)
 
 }

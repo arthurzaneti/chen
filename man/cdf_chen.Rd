@@ -7,22 +7,21 @@
 cdf_chen(y, theta, lower_tail = T)
 }
 \arguments{
-\item{y}{A numeric. The input of the mathematical function}
+\item{y}{The input of the mathematical function, if it is a vector, than the return will be a vector.}
 
-\item{theta}{A length 2 numeric vector, or coercible to vector using `as.vector(unlist())`,
+\item{theta}{A length 2 numeric vector, or coercible to vector using \code{as.vector(unlist(theta))},
 with the parameters.}
 }
 \value{
-A double representing the cumulative probability till y \code{y}
+A double, or vector of doubles, representing the cumulative probability till \code{y}
 }
 \description{
 The mathematical function that describes the cumulative probability for the Chen
- distribution. Its formula is \deqn{F(y| \lambda,\delta)= 1 - \exp \left[  \delta \left( 1-\exp(y^{\lambda}) \right) \right].}.
+ distribution. Its formula is \deqn{F(y| \lambda,\delta)= 1 - \exp \left[  \delta \left( 1-\exp(y^{\lambda}) \right) \right]}
 }
 \examples{
-# same numbers as the cdf_chen function
-curve(cdf_chen(x, theta = c(0.4, 0.01)),
-      from = 0, to = 100, xlab = "y", ylab = "cdf", n = 1000)
+# same numbers as the pdf_chen function
+cdf_chen(1, theta = c(0.7, 0.2))
 curve(cdf_chen(x, theta = c(0.4, 0.1)),
       from = 0, to = 100, xlab = "y", ylab = "cdf", n = 1000)
 curve(cdf_chen(x, theta = c(0.7, 0.01)),

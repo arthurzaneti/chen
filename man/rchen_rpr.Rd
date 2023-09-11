@@ -2,35 +2,39 @@
 % Please edit documentation in R/rchen_rpr.R
 \name{rchen_rpr}
 \alias{rchen_rpr}
-\title{Random generation for the Reparameterized Chen distribution}
+\title{Random generation for the Reparameterized Chen distribution
+
+Usually used for simulation together with \code{estim_chen_rpr}.}
 \usage{
 rchen_rpr(n, theta, tau = 0.5)
 }
 \arguments{
-\item{n}{number of random values to generate}
+\item{n}{Number of random values to generate}
 
 \item{theta}{A length 2 or n+1 vector or list with lambda and mu respectively.
-The values will be coersed to vector using `as.vector(unlist(theta))` and
+The values will be coersed to vector using \code{as.vector(unlist(theta))} and
 lambda will always be considered as the first element in that vector, if the length is two than all values will
 be generated with the same mu, if the length is n+1 than one value will be generated with each mu. See details.}
 
-\item{tau}{The quantile, default is 0.5.}
+\item{tau}{The quantile.}
 }
 \value{
 A length n numeric vector.
 }
 \description{
 Random generation for the Reparameterized Chen distribution
+
+Usually used for simulation together with \code{estim_chen_rpr}.
 }
 \details{
-The coersion of theta to vector is done using `as.vector(unlist(theta))`
+The coersion of theta to vector is done using \code{as.vector(unlist(theta))}
 so lists and matrices will work (dataframes to, but they are not recommended) as long as they have the correct length
 . The generation of random values with different mus is usefull in the context of regression especially.
 }
 \examples{
 rchen_rpr(10, c(0.7, 7), 0.5)
 rchen_rpr(10, c(0.1, 1))
-rchen_rpr(10, c(1.1, 9), .3)
+rchen_rpr(100, list(0.7, stats::runif(100, 6,7)), .3)
 hist(rchen_rpr(100, c(0.7, 7), 0.7))
 
 }

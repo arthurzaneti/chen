@@ -9,10 +9,10 @@ cdf_chen_rpr(y, theta, tau = 0.5, lower_tail = T)
 \arguments{
 \item{y}{A numeric. The input of the mathematical function}
 
-\item{theta}{A length 2 numeric vector, or coercible to vector using `as.vector(unlist())`,
+\item{theta}{A length 2 numeric vector, or coercible to vector using \code{as.vector(unlist(theta))},
 with the parameters.}
 
-\item{tau}{A single number between 0 and 1 that is the quantile.}
+\item{tau}{The quantile.}
 }
 \value{
 A double representing the cumulative probability till \code{y}
@@ -21,12 +21,11 @@ A double representing the cumulative probability till \code{y}
 The mathematical function that describes the cumulative distribution for the Reparameterized
 Chen distribution. Its formula is \deqn{F(y | \lambda, \mu, \tau)= 1 - \exp
 \left[ \dfrac{\log(1-\tau)}{(1-\exp(\mu^{\lambda}))} \left(  1-\exp\left(y^{\lambda}\right)
-\right) \right] , \quad  y > 0.}
+\right) \right] , \quad  y > 0}
 }
 \examples{
-# same numbers as the cdf_chen_rpr function
-curve(cdf_chen_rpr(x, theta = c(0.7, 7), tau = 0.5),
-      from = 0, to = 20, xlab = "y", ylab = "cdf", n = 1000)
+# same numbers as the pdf_chen_rpr function
+cdf_chen_rpr(1, theta = c(0.7, 7), 0.3)
 curve(cdf_chen_rpr(x, theta = c(0.5, 2), tau = 0.3),
       from = 0, to = 20, xlab = "y", ylab = "cdf", n = 1000)
 curve(cdf_chen_rpr(x, theta = c(0.9, 3)),
