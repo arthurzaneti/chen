@@ -81,6 +81,7 @@ ll_ARMA <- function(y, y_cut, log_y, vars, n, n_ar, n_ma, ar, ma, max_arma, tau)
 #______________________________________________________________________________________________________
 #' @describeIn ll_ARMA For the AR case
 #' @order 2
+#' @export
 ll_AR <- function(y, y_cut, log_y, vars, n, n_ar, ar, max_ar, tau){
   beta0 <- vars[1]
   phi <- vars[2:(n_ar + 1)]
@@ -101,6 +102,7 @@ ll_AR <- function(y, y_cut, log_y, vars, n, n_ar, ar, max_ar, tau){
 #______________________________________________________________________________________________________
 #' @describeIn ll_ARMA For the ARMA case
 #' @order 3
+#' @export
 ll_MA <- function(y, y_cut, log_y, vars, n, n_ma, ma, max_ma, tau){
   beta0 <- vars[1]
   theta <- vars[2:(n_ma + 1)]

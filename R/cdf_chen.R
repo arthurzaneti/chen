@@ -7,7 +7,7 @@
 #' @param y The input of the mathematical function, if it is a vector, than the return will be a vector.
 #' @param theta A length 2 numeric vector, or coercible to vector using \code{as.vector(unlist(theta))},
 #'  with the parameters.
-#'
+#' @param lower_tail If true, than probabilities are \eqn{P(Y \leq y)}, otherwise \eqn{P(Y \geq y)}
 #' @return A double, or vector of doubles, representing the cumulative probability till \code{y}
 #' @import checkmate
 #' @export

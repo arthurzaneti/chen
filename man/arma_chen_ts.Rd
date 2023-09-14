@@ -15,9 +15,33 @@ arma_chen_ts(y, ar = NULL, ma = NULL, tau = 0.5)
 
 \item{tau}{The quantile}
 }
+\value{
+An object of class \code{CHARMA} with the following attributes:
+\describe{
+
+  \item{\code{coef}}{The coefficients of the regression model. This is what is gonna
+  be used for predicting new data.}
+
+  \item{\code{beta0}, \code{phi}, \code{theta}}{Explained in description}
+
+  \item{\code{lambda}}{The predicted value of the \eqn{\lambda} parameter in
+  reparameterized Chen distribution formula.}
+
+  \item{\code{hessian}}{A matrix giving the estimate of the Hessian at the solutions found}
+
+  \item{\code{fitted}}{The output variables used for prediction, will be a column of \code{data}}
+
+  \item{\code{etahat}}{The predicted variables, they are in log scale}
+
+  \item{\code{errorhat}}{The errors in prediction, they are in log scale}
+
+  \item{\code{case}}{The model case between, ARMA, AR and MA, mainly used internally}
+
+  \item{\code{call}}{The matched function call.}}
+}
 \description{
 Used for fitting the Chen auto-regressive moving averages model with regressors. The model is given by
-\deqn{\beta_{0} +
+\deqn{\eta_t = \beta_{0} +
 \sum_{j\in ar}\phi_j \log(y_{t-j})
 +\sum_{j\in ma}\theta_jr_{t-j}}
 Where \itemize{
@@ -30,4 +54,10 @@ Where \itemize{
 \item{\eqn{\phi} are the auto-regression coefficients}
 \item{\eqn{\theta} are the moving-averages coefficients}
 \item{\eqn{r} are the errors}}
+}
+\examples{
+arma_chen_ts(chen::rchen_ts(100, 1, 0.7, ar_coef = c(0.5, 0.2), ma_coef = c(0.2, 0.1)), ar = 1:2, ma = 1:2)
+arma_chen_ts(chen::rchen_ts(100, 1, 0.7, ar_coef = c(0.5, 0.2)), ar = 1:2)
+arma_chen_ts(chen::rchen_ts(100, 1, 0.7, ma_coef = c(0.2, 0.1)), ma = 1:2)
+
 }

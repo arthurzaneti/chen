@@ -50,6 +50,7 @@ reg_chen <- function(data, formula, tau = 0.5, n_bootstrap = NULL){ # For the re
            error = function(e) stop("The object provided as data is not coercible to data.frame"))
   checkmate::assert_data_frame(data, any.missing = F)
   checkmate::assert_formula(formula)
+  checkmate::assert_subset(all.vars(formula), names(data))
   checkmate::assert_number(tau, lower = 0, upper = 1)
   checkmate::assert_number(n_bootstrap, lower = 1, null.ok = T)
 

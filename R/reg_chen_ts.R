@@ -1,7 +1,7 @@
 #' CHARMA fitting with regressors
 #'
 #' Used for fitting the Chen auto-regressive moving averages model with regressors. The model is given by
-#' \deqn{\beta_{0} + \boldsymbol{x}_t^\top\boldsymbol{\beta}+
+#' \deqn{\eta_t = \beta_{0} + \boldsymbol{x}_t^\top\boldsymbol{\beta}+
 #'\sum_{j\in ar}\phi_j [\log(y_{t-j})-\boldsymbol{x}_{t-j}^\top\boldsymbol{\beta}]
 #' +\sum_{j\in ma}\theta_jr_{t-j}}
 #' Where \itemize{
@@ -38,26 +38,43 @@
 #'
 #'   \item{\code{fitted}}{The output variables used for prediction, will be a column of \code{data}}
 #'
-#'   \item{\code{etahat}}{The predicted variables}
+#'   \item{\code{etahat}}{The predicted variables, they are in log scale}
 #'
 #'   \item{\code{errorhat}}{The errors in prediction, they are in log scale}
 #'
-#'
-#'
-#'   \item{\code{tau}}{Simply the value provided as input for \code{tau}.}
-#'
-#'   \item{\code{formula}}{Simply the value provided as input for \code{formula}.}
-#'
-#'   \item{\code{y}}{The output variables used for prediction, will be a column of \code{data}.}
-#'
-#'   \item{\code{cvar}}{The covariables used for prediction, all columns of \code{data}}
+#'   \item{\code{case}}{The model case between, REG_ARMA, REG_AR and REG_MA, mainly used internally}
 #'
 #'   \item{\code{call}}{The matched function call.}}
 #' @export
 #'
 #' @examples
+#' a <- stats::runif(100)
+#' b <- stats::runif(100, 2, 3)
+#' form <- y ~ a + b
+#' df <- data.frame(a = a, b = b)
+#' df$y <- chen::rchen_ts(100, 1, 0.7, ar_coef = c(0.2, 0.1), ma_coef = c(0.5, 0.3),
+#'                                     reg_coef = c(0.2, 1), cvar = cbind(a, b))
+#' reg_chen_ts(df, form, ar = 1:2, ma = 1:2)
+#' df$y <- chen::rchen_ts(100, 1, 0.7, ar_coef = c(0.2, 0.1) , reg_coef = c(0.2, 1),
+#'                                     cvar = cbind(a, b))
+#'
+#' reg_chen_ts(df, form, ar = 1:2)
+#' df$y <- chen::rchen_ts(100, 1, 0.7, ma_coef = c(0.5, 0.2), reg_coef = c(0.2, 1),
+#'                                     cvar = cbind(a, b))
+#' reg_chen_ts(df, form, ma = 1:2)
+
 
 reg_chen_ts <- function(data, formula, ar = NULL, ma = NULL, tau = 0.5){
+  tryCatch(data <- as.data.frame(data),
+           error = function(e) stop("The object provided as data is not coercible to data.frame"))
+  if(!is.null(ar)) tryCatch(ar <- as.vector(unlist(ar)) , error = function(e) stop("The value provided for ar is not coercible to vector"))
+  if(!is.null(ma)) tryCatch(ma <- as.vector(unlist(ma)) , error = function(e) stop("The value provided for ma is not coercible to vector"))
+  checkmate::assert_data_frame(data, any.missing = F)
+  checkmate::assert_formula(formula)
+  if(!checkmate::test_subset(all.vars(formula), names(data))) stop("data does not contain all variables in formula")
+  checkmate::assert_numeric(ar, null.ok = T)
+  checkmate::assert_numeric(ma, null.ok = T)
+  checkmate::assert_number(tau, lower = 0, upper = 1)
   #__________________________________ORGANIZING____________________________________
 
   y <- as.vector(data[, all.vars(formula[[2]])])
@@ -126,7 +143,6 @@ REG_ARMA <- function(y, ar, ma, cvar, tau){
   model$lambda <- lambda <- coef[l]
 
   model$hessian <- opt$hessian
-  model$fitted <- c(rep(NA, max_arma), y_cut)
 
   errorhat <- rep(0, n)
   etahat <- rep(NA, n)
@@ -143,6 +159,7 @@ REG_ARMA <- function(y, ar, ma, cvar, tau){
   model$etahat <- etahat
   model$errorhat <- errorhat
   model$case <- "REG_ARMA"
+
   class(model) <- "reg_CHARMA"
   return(model)
 }
@@ -195,7 +212,6 @@ REG_AR <- function(y, ar, cvar, tau){
   model$lambda <- lambda <- coef[l]
 
   model$hessian <- opt$hessian
-  model$fitted <- c(rep(NA, max_ar), y_cut)
 
   errorhat <- rep(0, n)
   etahat <- rep(NA, n)
@@ -211,6 +227,7 @@ REG_AR <- function(y, ar, cvar, tau){
   model$etahat <- etahat
   model$errorhat <- errorhat
   model$case <- "REG_AR"
+
   class(model) <- "reg_CHARMA"
   return(model)
 }
@@ -255,7 +272,6 @@ REG_MA <- function(y, ma, cvar, tau){
   model$lambda <- lambda <- coef[l]
 
   model$hessian <- opt$hessian
-  model$fitted <- c(rep(NA, max_ma), y_cut)
 
   errorhat <- rep(0, n)
   etahat <- rep(NA, n)
@@ -271,6 +287,7 @@ REG_MA <- function(y, ma, cvar, tau){
   model$etahat <- etahat
   model$errorhat <- errorhat
   model$case <- "REG_MA"
+
   class(model) <- "reg_CHARMA"
   return(model)
 }

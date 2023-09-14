@@ -11,6 +11,8 @@ cdf_chen(y, theta, lower_tail = T)
 
 \item{theta}{A length 2 numeric vector, or coercible to vector using \code{as.vector(unlist(theta))},
 with the parameters.}
+
+\item{lower_tail}{If true, than probabilities are \eqn{P(Y \leq y)}, otherwise \eqn{P(Y \geq y)}}
 }
 \value{
 A double, or vector of doubles, representing the cumulative probability till \code{y}

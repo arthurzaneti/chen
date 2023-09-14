@@ -10,6 +10,7 @@
 #' @param theta  A length 2 numeric vector, or coercible to vector using \code{as.vector(unlist(theta))},
 #'  with the parameters.
 #' @param tau The quantile.
+#' @param lower_tail If true, than probabilities are \eqn{P(Y \leq y)}, otherwise \eqn{P(Y \geq y)}
 #' @return A double representing the cumulative probability till \code{y}
 #' @import checkmate
 #' @export

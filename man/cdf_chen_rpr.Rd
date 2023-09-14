@@ -13,6 +13,8 @@ cdf_chen_rpr(y, theta, tau = 0.5, lower_tail = T)
 with the parameters.}
 
 \item{tau}{The quantile.}
+
+\item{lower_tail}{If true, than probabilities are \eqn{P(Y \leq y)}, otherwise \eqn{P(Y \geq y)}}
 }
 \value{
 A double representing the cumulative probability till \code{y}

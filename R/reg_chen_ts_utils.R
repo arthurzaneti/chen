@@ -52,6 +52,7 @@ ll_REG_ARMA <- function(y, y_cut, log_y, vars, n, n_ar, n_ma, ar, ma, max_arma, 
 
 #' @describeIn ll_REG_ARMA For the REG_AR case
 #' @order 2
+#' @export
 
 ll_REG_AR <- function(y, y_cut, log_y, vars, n, n_ar, ar, max_ar, cvar, tau){
   l <- length(vars) # auxiliary variable for the indices
@@ -75,6 +76,7 @@ ll_REG_AR <- function(y, y_cut, log_y, vars, n, n_ar, ar, max_ar, cvar, tau){
 
 #' @describeIn ll_REG_ARMA For the REG_MA case
 #' @order 3
+#' @export
 ll_REG_MA <- function(y, y_cut, log_y, vars, n, n_ma, ma, max_ma, cvar, tau){
   l <- length(vars) # auxiliary variable for the indices
   beta0 <- vars[1]

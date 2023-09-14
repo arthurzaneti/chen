@@ -1,7 +1,7 @@
 #' CHARMA fitting without regressors
 #'
 #' Used for fitting the Chen auto-regressive moving averages model with regressors. The model is given by
-#' \deqn{\beta_{0} +
+#' \deqn{\eta_t = \beta_{0} +
 #'\sum_{j\in ar}\phi_j \log(y_{t-j})
 #' +\sum_{j\in ma}\theta_jr_{t-j}}
 #' Where \itemize{
@@ -20,13 +20,45 @@
 #' @param ma Specified in description.
 #' @param tau The quantile
 #'
-#' @return
+#' @return An object of class \code{CHARMA} with the following attributes:
+#' \describe{
+#'
+#'   \item{\code{coef}}{The coefficients of the regression model. This is what is gonna
+#'   be used for predicting new data.}
+#'
+#'   \item{\code{beta0}, \code{phi}, \code{theta}}{Explained in description}
+#'
+#'   \item{\code{lambda}}{The predicted value of the \eqn{\lambda} parameter in
+#'   reparameterized Chen distribution formula.}
+#'
+#'   \item{\code{hessian}}{A matrix giving the estimate of the Hessian at the solutions found}
+#'
+#'   \item{\code{fitted}}{The output variables used for prediction, will be a column of \code{data}}
+#'
+#'   \item{\code{etahat}}{The predicted variables, they are in log scale}
+#'
+#'   \item{\code{errorhat}}{The errors in prediction, they are in log scale}
+#'
+#'   \item{\code{case}}{The model case between, ARMA, AR and MA, mainly used internally}
+#'
+#'   \item{\code{call}}{The matched function call.}}
+#'
 #' @export
 #'
 #' @examples
-
+#' arma_chen_ts(chen::rchen_ts(100, 1, 0.7, ar_coef = c(0.5, 0.2), ma_coef = c(0.2, 0.1)), ar = 1:2, ma = 1:2)
+#' arma_chen_ts(chen::rchen_ts(100, 1, 0.7, ar_coef = c(0.5, 0.2)), ar = 1:2)
+#' arma_chen_ts(chen::rchen_ts(100, 1, 0.7, ma_coef = c(0.2, 0.1)), ma = 1:2)
+#'
 arma_chen_ts <- function(y, ar = NULL, ma = NULL, tau = 0.5){
-
+  tryCatch(y <- as.vector(y),
+           error = function(e) stop("The object provided as y is not coercible to vector nor is a vector"))
+  if(!is.null(ar)) tryCatch(ar <- as.vector(unlist(ar)) , error = function(e) stop("The value provided for ar is not coercible to vector"))
+  if(!is.null(ma)) tryCatch(ma <- as.vector(unlist(ma)) , error = function(e) stop("The value provided for ma is not coercible to vector"))
+  checkmate::assert_numeric(y)
+  checkmate::assert_numeric(ar, null.ok = T)
+  checkmate::assert_numeric(ma, null.ok = T)
+  checkmate::assert_number(tau, lower = 0, upper = 1)
   #__________________________________ORGANIZING____________________________________
 
   # log_y <- log(y)
@@ -85,7 +117,6 @@ ARMA <- function(y, ar, ma, tau){
   model$theta <- theta <- coef[(max_ar + 2): (max_ar + max_ma + 1)]
   model$lambda <- lambda <- coef[(max_ar + max_ma + 2)]
   model$hessian <- opt$hessian
-  model$fitted <- c(rep(NA, max_arma), y_cut)
 
   errorhat <- rep(0, n)
   etahat <- rep(NA, n)
@@ -100,6 +131,7 @@ ARMA <- function(y, ar, ma, tau){
   model$etahat <- etahat
   model$errorhat <- errorhat
   model$case <- "ARMA"
+
   class(model) <- "CHARMA"
   return(model)
 }
@@ -145,7 +177,6 @@ AR <- function(y, ar, tau){
   model$phi <- phi <- coef[2:(max_ar + 1)]
   model$lambda <- lambda <- coef[(max_ar + 2)]
   model$hessian <- opt$hessian
-  model$fitted <- c(rep(NA, max_ar), y_cut)
 
   errorhat <- rep(0, n)
   etahat <- rep(NA, n)
@@ -160,6 +191,7 @@ AR <- function(y, ar, tau){
   model$etahat <- etahat
   model$errorhat <- errorhat
   model$case <- "AR"
+
   class(model) <- "CHARMA"
   return(model)
 
@@ -200,7 +232,6 @@ MA <- function(y, ma, tau){
   model$phi <- theta <- coef[2:(max_ma + 1)]
   model$lambda <- lambda <- coef[(max_ma + 2)]
   model$hessian <- opt$hessian
-  model$fitted <- c(rep(NA, max_ma), y_cut)
 
   errorhat <- rep(0, n)
   etahat <- rep(NA, n)
@@ -215,6 +246,7 @@ MA <- function(y, ma, tau){
   model$etahat <- etahat
   model$errorhat <- errorhat
   model$case <- "MA"
+
   class(model) <- "CHARMA"
   return(model)
 
