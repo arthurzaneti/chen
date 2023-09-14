@@ -21,6 +21,8 @@ rchen_ts(
 
 \item{intercept}{The formula's intercept}
 
+\item{lambda}{The distribution parameter \eqn{\lambda}}
+
 \item{ar_coef}{The coefficients for the auto-regressive model}
 
 \item{ma_coef}{The coefficients for the moving averages model}

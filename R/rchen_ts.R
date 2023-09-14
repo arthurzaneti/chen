@@ -5,7 +5,7 @@
 #'
 #' @param n Number of random values to generate
 #' @param intercept The formula's intercept
-#' @param lambda The distribution parameter \eqn{\lambda}}
+#' @param lambda The distribution parameter \eqn{\lambda}
 #' @param ar_coef The coefficients for the auto-regressive model
 #' @param ma_coef The coefficients for the moving averages model
 #' @param reg_coef The coefficients for the regression model, should only be provided
@@ -43,9 +43,9 @@ rchen_ts <- function(n, intercept = 0, lambda, ar_coef = NULL, ma_coef = NULL, r
   checkmate::assert_number(tau, lower = 0, upper = 1)
 
   #______________________________________ORGANIZING_______________________________________
-  isar <- chen::is_null(ar_coef)
-  isma <- chen::is_null(ma_coef)
-  isreg <- chen::is_null(reg_coef)
+  isar <- !chen::is_null(ar_coef)
+  isma <- !chen::is_null(ma_coef)
+  isreg <- !chen::is_null(reg_coef)
   if(isar) {
     ar <- 1:length(ar_coef)
     p <- length(ar)
@@ -58,8 +58,7 @@ rchen_ts <- function(n, intercept = 0, lambda, ar_coef = NULL, ma_coef = NULL, r
     stop("No values were provided for ar_coef or ma_coef, at least one of them
          needs to be different to NULL")
   }
-  case <- chen::arma_case(isar, isma, isreg)
-  print(case)
+  case <- chen::reg_arma_case(isar, isma, isreg)
   buffer <- 50
   #_________________________________________ARMA____________________________________________
   if(case == "ARMA"){

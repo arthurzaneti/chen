@@ -2,14 +2,14 @@
 #'
 #' Used to fit a linear model for predicting the median of the Chen distribution
 #'
-#' @param data A `data.frame`(or coercible to `data.frame` with `as.data.frame`)
-#' @param formula An object of class `formula` which is gonna be used for fitting
+#' @param data A \code{data.frame} with the variables specified in \code{formula}
+#' @param formula An object of class \code{formula} which is gonna be used for fitting
 #'  the model
 #' @param tau A number from zero to one (exclusive) which represents the quantile.
 #' @param n_bootstrap The number of resamples for bootstrap correction. Default is NULL,
 #' so no bootstrap correction occurs.
 #'
-#' @return An object of class `reg_chen` with the following attributes:
+#' @return An object of class \code{reg_chen} with the following attributes:
 #' \describe{
 #'   \item{\code{names}}{The names of the columns of the data frame used for fitting the
 #'   \code{reg_chen} model.}
@@ -54,8 +54,6 @@ reg_chen <- function(data, formula, tau = 0.5, n_bootstrap = NULL){ # For the re
   checkmate::assert_number(n_bootstrap, lower = 1, null.ok = T)
 
   #______________________________________DATA_CLEANING____________________________________
-
-  data <- as.data.frame(data)
 
   y <- as.vector(data[, all.vars(formula[[2]])])
   X <- stats::model.matrix(formula, data)
@@ -104,7 +102,7 @@ reg_chen <- function(data, formula, tau = 0.5, n_bootstrap = NULL){ # For the re
   model$y <- y
   model$cvar <- X
   model$call <-  match.call()
-  class(model) <- "reg_chen_model"
+  class(model) <- "reg_chen"
   return(model)
 #______________________________________NO_BOOTSTRAP_______________________________________
   } else {

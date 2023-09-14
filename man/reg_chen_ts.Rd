@@ -2,13 +2,68 @@
 % Please edit documentation in R/reg_chen_ts.R
 \name{reg_chen_ts}
 \alias{reg_chen_ts}
-\title{Title}
+\title{CHARMA fitting with regressors}
 \usage{
-reg_chen_ts(y, ar = NULL, ma = NULL, cvar = NULL, tau = 0.5)
+reg_chen_ts(data, formula, ar = NULL, ma = NULL, tau = 0.5)
 }
 \arguments{
-\item{tau}{}
+\item{data}{A \code{data.frame} with the variables specified in \code{formula}}
+
+\item{formula}{An object of class \code{formula} which is gonna be used for fitting
+the model}
+
+\item{ar}{Specified in description.}
+
+\item{ma}{Specified in description.}
+
+\item{tau}{The quantile}
+}
+\value{
+An object of class \code{reg_CHARMA} with the following attributes:
+\describe{
+
+  \item{\code{coef}}{The coefficients of the regression model. This is what is gonna
+  be used for predicting new data.}
+
+  \item{\code{beta0},\code{phi}, \code{theta}, \code{betas}}{Explained in description}
+
+  \item{\code{phi}}{The auto-regressive coefficients estimate}
+
+  \item{\code{coef}}{The moving averages coefficients estimate}
+
+  \item{\code{coef}}{The coefficients of the regression model. This is what is gonna
+  be used for predicting new data.}
+
+  \item{\code{lambda}}{The predicted value of the \eqn{\lambda} parameter in
+  reparameterized Chen distribution formula.}
+
+  \item{\code{tau}}{Simply the value provided as input for \code{tau}.}
+
+  \item{\code{non_convergent_samples}}{The number of bootstrap samples for which the
+  parameter estimation didn't converge, will only be present if \code{n_bootstrap}
+  is provided.}
+
+  \item{\code{formula}}{Simply the value provided as input for \code{formula}.}
+
+  \item{\code{y}}{The output variables used for prediction, will be a column of \code{data}.}
+
+  \item{\code{cvar}}{The covariables used for prediction, all columns of \code{data}.}
+
+  \item{\code{call}}{The matched function call.}}
 }
 \description{
-Title
+Used for fitting the Chen auto-regressive moving averages model with regressors. The model is given by
+\deqn{\beta_{0} + \boldsymbol{x}_t^\top\boldsymbol{\beta}+
+\sum_{j\in ar}\phi_j [\log(y_{t-j})-\boldsymbol{x}_{t-j}^\top\boldsymbol{\beta}]
++\sum_{j\in ma}\theta_jr_{t-j}}
+Where \itemize{
+\item{\eqn{y} are the variables}
+\item{\eqn{\beta_{0}} is the intercept}
+\item{\eqn{\boldsymbol{x}_t} are the covariables}
+\item{\eqn{\boldsymbol{\beta}} are the regression coefficients}
+\item{\eqn{ar} are the indices for the auto-regression}
+\item{\eqn{ma} are the indices for the moving-averages}
+\item{\eqn{\phi} are the auto-regression coefficients}
+\item{\eqn{\theta} are the moving-averages coefficients}
+\item{\eqn{r} are the errors}}
 }

@@ -7,9 +7,9 @@
 reg_chen(data, formula, tau = 0.5, n_bootstrap = NULL)
 }
 \arguments{
-\item{data}{A `data.frame`(or coercible to `data.frame` with `as.data.frame`)}
+\item{data}{A \code{data.frame} with the variables specified in \code{formula}}
 
-\item{formula}{An object of class `formula` which is gonna be used for fitting
+\item{formula}{An object of class \code{formula} which is gonna be used for fitting
 the model}
 
 \item{tau}{A number from zero to one (exclusive) which represents the quantile.}
@@ -18,7 +18,7 @@ the model}
 so no bootstrap correction occurs.}
 }
 \value{
-An object of class `reg_chen` with the following attributes:
+An object of class \code{reg_chen} with the following attributes:
 \describe{
   \item{\code{names}}{The names of the columns of the data frame used for fitting the
   \code{reg_chen} model.}
