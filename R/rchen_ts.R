@@ -1,7 +1,9 @@
 #' Random generation for the CHARMA model
 #'
-#' Generates random values following correlated through time according to the CHARMA
-#' model. Usually used for simulation together with \code{reg_chen_ts}.
+#' Generates random values correlated through time according to the CHARMA
+#' model. Usually used for simulation together with \code{reg_chen_ts} and
+#' \code{arma_chen_ts}. Further details into the formula can be found in
+#'  the documentation of \code{reg_chen_ts}.
 #'
 #' @param n Number of random values to generate
 #' @param intercept The formula's intercept
@@ -14,10 +16,6 @@
 #' @param freq Parameter for the \code{ts} object that is returned
 #' @param tau The quantile
 #'
-#' @details The values provided as the coefficients of the model will be coerced to vector
-#' using \code{as.vector(unlist(**_coef))}, if that is not possible an error will be generated.
-#' That means any type coercible to vector can be used. Similarly \code{as.matrix} is used to
-#' coerce cvar.
 #' @importFrom stats ts
 #' @import checkmate
 #' @return A \code{ts} object with the generated values and the specified frequency

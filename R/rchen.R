@@ -1,13 +1,13 @@
 #' @title Random generation for the Chen distribution
 #'
+#' @description Used for generating random variables. Specially usefull for simulation
+#' purposes.
+#'
 #' @param n Number of random values to generate
-#' @param theta A length 2 vector, or coercible to vector, look at details for
-#' more information about the coersion. This will be the parameters of the distribution
+#' @param theta A length 2 vector. They will be the parameters of the distribution
 #' .The first one is considered to be lambda and the second one to be delta
 #'
-#' @return A length n numeric vector.
-#' @details The coercion of theta to vector is done using \code{as.vector(unlist(theta))}
-#' so lists and matrices will work, as long as they are length 2.
+#' @return A length n numeric vector with the random values.
 #' @importFrom stats runif
 #' @import checkmate
 #' @export

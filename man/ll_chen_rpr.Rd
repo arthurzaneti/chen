@@ -2,13 +2,28 @@
 % Please edit documentation in R/ll_chen_rpr.R
 \name{ll_chen_rpr}
 \alias{ll_chen_rpr}
-\title{Title}
+\title{Log-likelihood function for the reparameterized Chen distribution}
 \usage{
 ll_chen_rpr(y, theta, tau)
 }
 \arguments{
-\item{tau}{}
+\item{y}{The random sample}
+
+\item{theta}{A length 2 vector. They will be the parameters of the distribution
+.The first one is considered to be \eqn{\lambda} and the second one to be \eqn{\mu}}
+
+\item{tau}{The quantile}
+}
+\value{
+The output of the log-likelihood formula, that is, the likelihood of the given set
+of parameters given the output variables.
 }
 \description{
-Title
+Mathematical formula given by \deqn{
+\ell(\theta | y) = \log(\log(1 - \tau)) - \log(1 - \exp(\mu^{\lambda})) +
+(\lambda - 1) \log(y_t) + \log(\lambda) + \frac{\log(1 - \tau)(1 - \exp(y_t^{\lambda}))}
+{1 - \exp(\mu^{\lambda})} + y_t^{\lambda}
+}
+Where \eqn{\mu} and \eqn{\lambda} are parameters, \eqn{\tau} is quantile
+and \eqn{y} is the random sample.
 }

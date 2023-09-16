@@ -7,8 +7,8 @@
 #'  +y^{\lambda} \right\rbrace  , \quad y>0}
 #'
 #' @param y The input of the mathematical function, if it is a vector, than the return will be a vector.
-#' @param theta A length 2 numeric vector, or coercible to vector using \code{as.vector(unlist(theta))},
-#'  with the parameters.
+#' @param theta A length 2 vector. They will be the parameters of the distribution
+#' .The first one is considered to be lambda and the second one to be delta
 #'
 #' @return A double, or vector of doubles, representing the probability density at \code{y}
 #' @import checkmate

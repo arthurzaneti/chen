@@ -40,14 +40,10 @@ if cvar is provided as well.}
 A \code{ts} object with the generated values and the specified frequency
 }
 \description{
-Generates random values following correlated through time according to the CHARMA
-model. Usually used for simulation together with \code{reg_chen_ts}.
-}
-\details{
-The values provided as the coefficients of the model will be coerced to vector
-using \code{as.vector(unlist(**_coef))}, if that is not possible an error will be generated.
-That means any type coercible to vector can be used. Similarly \code{as.matrix} is used to
-coerce cvar.
+Generates random values correlated through time according to the CHARMA
+model. Usually used for simulation together with \code{reg_chen_ts} and
+\code{arma_chen_ts}. Further details into the formula can be found in
+ the documentation of \code{reg_chen_ts}.
 }
 \examples{
 plot(rchen_ts(100, 1, 0.7, ar_coef = c(0.6, 0.1)))

@@ -5,7 +5,7 @@
 #' @param data A \code{data.frame} with the variables specified in \code{formula}
 #' @param formula An object of class \code{formula} which is gonna be used for fitting
 #'  the model
-#' @param tau A number from zero to one (exclusive) which represents the quantile.
+#' @param tau The quantile
 #' @param n_bootstrap The number of resamples for bootstrap correction. Default is NULL,
 #' so no bootstrap correction occurs.
 #'
@@ -16,13 +16,13 @@
 #'
 #'   \item{\code{coef0}}{The initial estimation of the coefficients before bootstrapping.
 #'   This attribute will only be present if a value of \code{n_bootstrap} is provided.
-#'   Useful for comparing the pre-bootstrap and post-bootstrap coefficients, but
+#'   Usefull for comparing the pre-bootstrap and post-bootstrap coefficients, but
 #'   all predictions should be done using \code{coef}.}
 #'
 #'   \item{\code{coef}}{The coefficients of the regression model. This is what is gonna
 #'   be used for predicting new data.}
 #'
-#'   \item{\code{lambda}}{The predicted value of the \eqn{\lambda} parameter in
+#'   \item{\code{lambda}}{The predicted value of the \eqn{\lambda} parameter in the
 #'   reparameterized Chen distribution formula.}
 #'
 #'   \item{\code{tau}}{Simply the value provided as input for \code{tau}.}

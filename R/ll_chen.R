@@ -2,7 +2,7 @@
 #'
 #' @description \deqn{
 #' \ell(\theta | y) = \log(\log(1 - \tau)) - \log(1 - \exp(\mu_t^{\lambda})) +
-#' (\lambda - 1) \log(y_t) + \log(\\lambda) + \frac{\log(1 - \tau)(1 - \exp(y_t^{\lambda}))}
+#' (\lambda - 1) \log(y_t) + \log(\lambda) + \frac{\log(1 - \tau)(1 - \exp(y_t^{\lambda}))}
 #' {1 - \exp(\mu_t^{\lambda})} + y_t^{\lambda}
 #' }
 #'

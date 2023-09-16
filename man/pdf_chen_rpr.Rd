@@ -9,8 +9,8 @@ pdf_chen_rpr(y, theta, tau = 0.5)
 \arguments{
 \item{y}{The input of the mathematical function, if it is a vector, than the return will be a vector.}
 
-\item{theta}{A length 2 numeric vector, or coercible to vector using \code{as.vector(unlist(theta))},
-with the parameters.}
+\item{theta}{A length 2 vector. They will be the parameters of the distribution
+.The first one is considered to be lambda and the second one to be mu}
 
 \item{tau}{The quantile.}
 }

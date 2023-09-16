@@ -34,13 +34,11 @@ An object of class \code{reg_CHARMA} with the following attributes:
 
   \item{\code{fitted}}{The output variables used for prediction, will be a column of \code{data}}
 
-  \item{\code{etahat}}{The predicted variables, they are in log scale}
+  \item{\code{etahat}}{The predicted variables in log scale}
 
-  \item{\code{errorhat}}{The errors in prediction, they are in log scale}
+  \item{\code{errorhat}}{The errors in prediction in log scale}
 
-  \item{\code{case}}{The model case between, REG_ARMA, REG_AR and REG_MA, mainly used internally}
-
-  \item{\code{call}}{The matched function call.}}
+  \item{\code{case}}{The model case between, REG_ARMA, REG_AR and REG_MA, mainly used internally}}
 }
 \description{
 Used for fitting the Chen auto-regressive moving averages model with regressors. The model is given by
@@ -50,7 +48,7 @@ Used for fitting the Chen auto-regressive moving averages model with regressors.
 Where \itemize{
 \item{\eqn{y} are the variables}
 \item{\eqn{\beta_{0}} is the intercept}
-\item{\eqn{\boldsymbol{x}_t} are the covariables}
+\item{\eqn{\boldsymbol{x}} are the covariables}
 \item{\eqn{\boldsymbol{\beta}} are the regression coefficients}
 \item{\eqn{ar} are the indices for the auto-regression}
 \item{\eqn{ma} are the indices for the moving-averages}

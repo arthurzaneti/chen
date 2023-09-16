@@ -9,8 +9,8 @@ pdf_chen(y, theta)
 \arguments{
 \item{y}{The input of the mathematical function, if it is a vector, than the return will be a vector.}
 
-\item{theta}{A length 2 numeric vector, or coercible to vector using \code{as.vector(unlist(theta))},
-with the parameters.}
+\item{theta}{A length 2 vector. They will be the parameters of the distribution
+.The first one is considered to be lambda and the second one to be delta}
 }
 \value{
 A double, or vector of doubles, representing the probability density at \code{y}
