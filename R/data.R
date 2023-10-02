@@ -19,5 +19,7 @@ generate_data <- function(){
                    ar = ar,
                    ma = ma)
 
-  usethis::use_data(df, internal = T)
+  r_values <- rchen(100, c(1, 0.2))
+  r_values_rpr <- rchen_rpr(100, c(0.7, 7))
+  usethis::use_data(df, r_values, r_values_rpr, internal = T)
 }

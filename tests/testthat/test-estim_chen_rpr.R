@@ -1,9 +1,9 @@
-set.seed(1)
-rvalues <- rchen_rpr(100, c(0.7, 7), 0.5)
+test_that("output",{
+  expect_snapshot(estim_chen_rpr(r_values_rpr))
+  expect_snapshot(estim_chen_rpr(r_values_rpr, clvl = 0.95))
 
-test_that("Return length",{
-  expect_list(estim_chen_rpr(rvalues), len = 1)
-  expect_list(estim_chen_rpr(rvalues, clvl = 0.95), len = 2)
-  expect_list(estim_chen_rpr(rvalues, clvl = 0.95, n_bootstrap = 10), len = 4)
+  # Kind of funky but was the way I found to test something even though boot is random
+  test_boot <- estim_chen_rpr(r_values_rpr, clvl = 0.95, n_bootstrap = 100)
+  expect_true(all((test_boot$t0 - test_boot$t) < .1))
 })
 

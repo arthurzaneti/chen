@@ -6,10 +6,9 @@
 #' log-likelihood function as well.
 #'
 #'
-#' @param y A numeric vector, or coercible to vector using `as.vector(unlist())`.
-#' Values sampled from a reparameterized Chen distribution.
-#' @param tau The quantile for the reparameterized distribution
+#' @param y The vector of variables
 #' @param clvl The confidence level for calculating the confidence intervals. If NULL no confidence
+#' @param tau The quantile
 #' intervals will be calculated. Default in NULL.
 #' @param n_bootstrap The number of resamples for bootstrap correction. Default is NULL,
 #' so no boostrap correction occurs.
@@ -41,11 +40,12 @@ estim_chen_rpr <- function(y, tau = 0.5, clvl = NULL, n_bootstrap = NULL){
       bootstrap_y <- data[indices]
 
       tryCatch({suppressWarnings(bootstrap_estim <- stats::optim(par = c(0.7, 4),
-                                                                 fn = log_likelihood_rpr,
+                                                                 fn = ll_chen_rpr,
                                                                  y = bootstrap_y,
                                                                  tau = tau,
                                                                  method = "BFGS",
                                                                  hessian = F,
+                                                                 lower = 0,
                                                                  control = list(fnscale = -1)))
         return(bootstrap_estim$par)
       }, error = function(e) {
@@ -84,6 +84,7 @@ estim_chen_rpr <- function(y, tau = 0.5, clvl = NULL, n_bootstrap = NULL){
                                            tau = tau,
                                            method = "BFGS",
                                            hessian = TRUE,
+                                           lower = 0,
                                            control = list(fnscale = -1)))
     param <- estim$par
     if (!is.null(clvl)) {
