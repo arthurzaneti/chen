@@ -28,6 +28,7 @@
 #'       from = 0, to = 20, xlab = "y", ylab = "pdf", n = 1000)
 
 
+
 pdf_chen_rpr <- function(y, theta, tau = 0.5){
   checkmate::assert_numeric(y, lower = 0)
   theta <- as.vector(unlist(theta))

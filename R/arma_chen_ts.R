@@ -49,7 +49,6 @@
 #' arma_chen_ts(chen::rchen_ts(100, 1, 0.7, ar_coef = c(0.5, 0.2), ma_coef = c(0.2, 0.1)), ar = 1:2, ma = 1:2)
 #' arma_chen_ts(chen::rchen_ts(100, 1, 0.7, ar_coef = c(0.5, 0.2)), ar = 1:2)
 #' arma_chen_ts(chen::rchen_ts(100, 1, 0.7, ma_coef = c(0.2, 0.1)), ma = 1:2)
-#'
 arma_chen_ts <- function(y, ar = NULL, ma = NULL, tau = 0.5){
   tryCatch(y <- as.vector(y),
            error = function(e) stop("The object provided as y is not coercible to vector nor is a vector"))

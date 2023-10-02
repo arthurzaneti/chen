@@ -7,8 +7,7 @@
 estim_chen(y, clvl = NULL, n_bootstrap = NULL)
 }
 \arguments{
-\item{y}{A numeric vector, or coercible to vector using `as.vector(unlist())`.
-Values sampled from a Chen distribution.}
+\item{y}{A numeric vector with the random sample}
 
 \item{clvl}{The confidence level for calculating the confidence intervals. If NULL no confidence
 intervals will be calculated. Default in NULL.}
@@ -26,9 +25,7 @@ If clvl is set to NULL (default) and full is set to TRUE(default)
 }
 \description{
 The Maximum likelihood estimate for the pair of parameters is numerically
-approximated with optim from the stats package. The estim_chen function is
-effectivelly a wrapper for optim, but it defines and uses the Chen
-log-likelihood function as well.
+approximated with \code{stats::optim} from the stats package.
 }
 \examples{
 estim_chen(rchen(100, c(1,1)))

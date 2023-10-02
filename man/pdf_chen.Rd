@@ -32,4 +32,5 @@ curve(pdf_chen(x, theta = c(1, 0.01)),
       from = 0, to = 100, xlab = "y", ylab = "pdf", n = 1000)
 curve(pdf_chen(x, theta = c(1, 0.0001)),
       from = 0, to = 100, xlab = "y", ylab = "pdf", n = 1000)
+
 }

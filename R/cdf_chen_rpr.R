@@ -28,6 +28,8 @@
 #'       from = 0, to = 20, xlab = "y", ylab = "cdf", n = 1000)
 
 
+
+
 cdf_chen_rpr <- function(y, theta, tau = 0.5, lower_tail = T){
   checkmate::assert_numeric(y, lower = 0)
   theta <- as.vector(unlist(theta))

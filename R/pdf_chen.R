@@ -25,7 +25,7 @@
 #'       from = 0, to = 100, xlab = "y", ylab = "pdf", n = 1000)
 #' curve(pdf_chen(x, theta = c(1, 0.0001)),
 #'       from = 0, to = 100, xlab = "y", ylab = "pdf", n = 1000)
-
+#'
 pdf_chen <- function(y, theta){
   checkmate::assert_numeric(y, lower = 0)
   theta <- as.vector(unlist(theta))
