@@ -70,8 +70,9 @@ ll_REG_AR <- function(y, y_cut, log_y, vars, n, n_ar, ar, max_ar, cvar, tau){
   mus <- exp(eta[(max_ar + 1) : n])
 
   # Evaluating the ll function
-  sum(chen::ll_chen_rpr(y_cut, c(lambda, mus), tau))
+  sum(chen::ll_chen_rpr(y_cut, list(lambda, mus), tau))
 }
+
 #______________________________________________________________________________________________________
 
 #' @describeIn ll_REG_ARMA For the REG_MA case
@@ -93,5 +94,5 @@ ll_REG_MA <- function(y, y_cut, log_y, vars, n, n_ma, ma, max_ma, cvar, tau){
   mus <- exp(eta[(max_ma + 1) : n])
 
   # Evaluating the ll function
-  sum(chen::ll_chen_rpr(y_cut, c(lambda, mus), tau))
+  sum(chen::ll_chen_rpr(y_cut, list(lambda, mus), tau))
 }

@@ -7,13 +7,12 @@
 estim_chen_rpr(y, tau = 0.5, clvl = NULL, n_bootstrap = NULL)
 }
 \arguments{
-\item{y}{A numeric vector, or coercible to vector using `as.vector(unlist())`.
-Values sampled from a reparameterized Chen distribution.}
+\item{y}{The vector of variables}
 
-\item{tau}{The quantile for the reparameterized distribution}
-
-\item{clvl}{The confidence level for calculating the confidence intervals. If NULL no confidence
+\item{tau}{The quantile
 intervals will be calculated. Default in NULL.}
+
+\item{clvl}{The confidence level for calculating the confidence intervals. If NULL no confidence}
 
 \item{n_bootstrap}{The number of resamples for bootstrap correction. Default is NULL,
 so no boostrap correction occurs.}

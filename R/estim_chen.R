@@ -37,7 +37,7 @@ estim_chen <- function(y, clvl = NULL, n_bootstrap = NULL) {
       bootstrap_y <- data[indices]
 
       tryCatch({suppressWarnings(bootstrap_estim <- stats::optim(par = c(0.7, 0.1),
-                                      fn = log_likelihood,
+                                      fn = chen::ll_chen,
                                       y = bootstrap_y,
                                       method = "BFGS",
                                       hessian = F,

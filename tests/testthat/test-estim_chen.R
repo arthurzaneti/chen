@@ -1,8 +1,8 @@
-set.seed(1)
-rvalues <- rchen(100, c(1,1))
+test_that("output",{
+  expect_snapshot(estim_chen(r_values))
+  expect_snapshot(estim_chen(r_values, clvl = 0.95))
 
-test_that("Return length",{
-  expect_list(estim_chen(rvalues), len = 1)
-  expect_list(estim_chen(rvalues, clvl = 0.95), len = 2)
-  expect_list(estim_chen(rvalues, clvl = 0.95, n_bootstrap = 10), len = 4)
+  # Kind of funky but was the way I found to test something even though boot is random
+  test_boot <- estim_chen(r_values, clvl = 0.95, n_bootstrap = 100)
+  expect_true(all((test_boot$t0 - test_boot$t) < .1))
 })

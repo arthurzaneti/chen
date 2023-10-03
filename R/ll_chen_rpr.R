@@ -9,8 +9,10 @@
 #' and \eqn{y} is the random sample.
 #'
 #' @param y A numeric vector with the random sample
-#' @param theta A length 2 vector. They will be the parameters of the distribution
-#' .The first one is considered to be \eqn{\lambda} and the second one to be \eqn{\mu}
+#' @param theta  A length 2 or n+1 vector or list with \lambda and \mu respectively.
+#' The values will be coersed to vector using \code{as.vector(unlist(theta))} and
+#' lambda will always be considered as the first element in that vector, if the length is two than all values will
+#' be generated with the same \mu, if the length is n+1 than one value will be generated with each \mu.
 #' @param tau The quantile
 #'
 #' @return The output of the log-likelihood formula, that is, the likelihood of the given set
@@ -18,9 +20,10 @@
 #' @export
 #'
 ll_chen_rpr <- function(y, theta, tau){
+  n <- length(y)
   theta <- as.vector(unlist(theta))
-  checkmate::assert_numeric(theta, lower = 0)
-  checkmate::assert_true(length(theta) == 2)
+  checkmate::assert_numeric(theta)
+  checkmate::assert_true(length(theta) == 2 || length(theta) == (n+1))
   checkmate::assert_number(tau, lower = 0, upper = 1)
   lambda <- theta[1]
   mu <- theta[2:length(theta)]

@@ -7,30 +7,19 @@
 ll_chen_rpr(y, theta, tau)
 }
 \arguments{
-<<<<<<< HEAD
-\item{y}{The random sample}
-=======
 \item{y}{A numeric vector with the random sample}
->>>>>>> 28da0d9 (Rebasing)
 
-\item{theta}{A length 2 vector. They will be the parameters of the distribution
-.The first one is considered to be \eqn{\lambda} and the second one to be \eqn{\mu}}
+\item{theta}{A length 2 or n+1 vector or list with \lambda and \mu respectively.
+The values will be coersed to vector using \code{as.vector(unlist(theta))} and
+lambda will always be considered as the first element in that vector, if the length is two than all values will
+be generated with the same \mu, if the length is n+1 than one value will be generated with each \mu.}
 
-<<<<<<< HEAD
 \item{tau}{The quantile}
 }
 \value{
 The output of the log-likelihood formula, that is, the likelihood of the given set
 of parameters given the output variables.
 }
-=======
-\item{tau}{}
-}
-\value{
-The output of the log-likelihood formula, that is, the likelihood of the given set
-of parameters given the output variables.
-}
->>>>>>> 28da0d9 (Rebasing)
 \description{
 Mathematical formula given by \deqn{
 \ell(\theta | y) = \log(\log(1 - \tau)) - \log(1 - \exp(\mu^{\lambda})) +

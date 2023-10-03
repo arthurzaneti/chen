@@ -112,7 +112,7 @@ REG_ARMA <- function(y, ar, ma, cvar, tau){
   mqo <- stats::coef(opt)
 
   # mqo is used to initialize both betas and phi
-  betas <- mqo[(max_ar + 2):length(mqo)]
+  betas <- mqo[(n_ar + 2):length(mqo)]
 
   #___________________________________
 
@@ -120,7 +120,7 @@ REG_ARMA <- function(y, ar, ma, cvar, tau){
   names_theta <- paste("theta", ma, sep = "")
   names_betas <- paste("beta", 1:length(betas))
   names_par <- c("(Intercept)", names_phi, names_theta, names_betas, "lambda")
-  opt_start <- c(mqo[1:(max_ar + 1)], rep(0, n_ma), betas, 0.7)
+  opt_start <- c(mqo[1:(n_ar + 1)], rep(0, n_ma), betas, 0.7)
   opt <- stats::optim(opt_start,
                       chen::ll_REG_ARMA,
                       y = y, y_cut = y_cut, log_y = log_y, n = n,
@@ -136,9 +136,9 @@ REG_ARMA <- function(y, ar, ma, cvar, tau){
   names(coef) <- names_par
   model$coef <- coef
   model$beta0 <- beta0 <- coef[1]
-  model$phi <- phi <- coef[2:(max_ar + 1)]
-  model$theta <- theta <- coef[(max_ar + 2): (max_ar + max_ma + 1)]
-  model$betas <- coef[(max_ar + max_ma + 2) : (l - 1)]
+  model$phi <- phi <- coef[2:(n_ar + 1)]
+  model$theta <- theta <- coef[(n_ar + 2): (n_ar + n_ma + 1)]
+  model$betas <- coef[(n_ar + n_ma + 2) : (l - 1)]
   model$lambda <- lambda <- coef[l]
 
   model$hessian <- opt$hessian
@@ -183,14 +183,14 @@ REG_AR <- function(y, ar, cvar, tau){
   mqo <- stats::coef(opt)
 
   # mqo is used to initialize both betas and phi
-  betas <- mqo[(max_ar + 2):length(mqo)]
+  betas <- mqo[(n_ar + 2):length(mqo)]
 
   #___________________________________
 
   names_phi <- paste("phi", ar, sep = "")
   names_betas <- paste("beta", 1:length(betas))
   names_par <- c("intercept", names_phi, names_betas, "lambda")
-  opt_start <- c(mqo[1:(max_ar + 1)], betas, 0.7)
+  opt_start <- c(mqo[1:(n_ar + 1)], betas, 0.7)
   opt <- stats::optim(opt_start,
                       chen::ll_REG_AR,
                       y = y, y_cut = y_cut, log_y = log_y, n = n,
@@ -206,8 +206,8 @@ REG_AR <- function(y, ar, cvar, tau){
   names(coef) <- names_par
   model$coef <- coef
   model$beta0 <- beta0 <- coef[1]
-  model$phi <- phi <- coef[2:(max_ar + 1)]
-  model$betas <- coef[(max_ar + 2) : (l - 1)]
+  model$phi <- phi <- coef[2:(n_ar + 1)]
+  model$betas <- coef[(n_ar + 2) : (l - 1)]
   model$lambda <- lambda <- coef[l]
 
   model$hessian <- opt$hessian
