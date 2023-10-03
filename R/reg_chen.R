@@ -93,9 +93,9 @@ reg_chen <- function(data, formula, tau = 0.5, n_bootstrap = NULL){ # For the re
 
   pars <- colMeans(boot_results$t)
   model <- list()
-  model$names <- colnames(X)
   model$coef0 <- boot_results$t0[2 : length(boot_results$t0)]
   model$coef <- pars[2:length(pars)]
+  model$names <- paste("beta", 0:(length(model$coef) - 1))
   model$lambda <- pars[1]
   model$tau <- tau
   model$non_convergent_samples <- error_count
@@ -122,10 +122,12 @@ reg_chen <- function(data, formula, tau = 0.5, n_bootstrap = NULL){ # For the re
     }
   }
   model <- list()
-  model$names <- colnames(X)
+
   model$coef <- estim$par[2: length(estim$par)]
+  model$names <- paste("beta", 0:(length(model$coef) - 1))
   model$lambda <- estim$par[1]
   model$tau <- tau
+  environment(formula) <- NULL
   model$formula <- formula
   model$y <- y
   model$cvar <- X

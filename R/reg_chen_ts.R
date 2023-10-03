@@ -119,7 +119,7 @@ REG_ARMA <- function(y, ar, ma, cvar, tau){
   names_phi <- paste("phi", ar, sep = "")
   names_theta <- paste("theta", ma, sep = "")
   names_betas <- paste("beta", 1:length(betas))
-  names_par <- c("(Intercept)", names_phi, names_theta, names_betas, "lambda")
+  names_par <- c("beta0", names_phi, names_theta, names_betas, "lambda")
   opt_start <- c(mqo[1:(n_ar + 1)], rep(0, n_ma), betas, 0.7)
   opt <- stats::optim(opt_start,
                       chen::ll_REG_ARMA,
@@ -133,7 +133,7 @@ REG_ARMA <- function(y, ar, ma, cvar, tau){
   model <- list()
   coef <- opt$par
   l <- length(coef) # auxiliary variable for the indices
-  names(coef) <- names_par
+  model$names <- names(coef) <- names_par
   model$coef <- coef
   model$beta0 <- beta0 <- coef[1]
   model$phi <- phi <- coef[2:(n_ar + 1)]
@@ -189,7 +189,7 @@ REG_AR <- function(y, ar, cvar, tau){
 
   names_phi <- paste("phi", ar, sep = "")
   names_betas <- paste("beta", 1:length(betas))
-  names_par <- c("intercept", names_phi, names_betas, "lambda")
+  names_par <- c("beta0", names_phi, names_betas, "lambda")
   opt_start <- c(mqo[1:(n_ar + 1)], betas, 0.7)
   opt <- stats::optim(opt_start,
                       chen::ll_REG_AR,
@@ -203,7 +203,7 @@ REG_AR <- function(y, ar, cvar, tau){
   model <- list()
   coef <- opt$par
   l <- length(coef) # auxiliary variable for the indices
-  names(coef) <- names_par
+  model$names <- names(coef) <- names_par
   model$coef <- coef
   model$beta0 <- beta0 <- coef[1]
   model$phi <- phi <- coef[2:(n_ar + 1)]
@@ -249,7 +249,7 @@ REG_MA <- function(y, ma, cvar, tau){
 
   names_theta <- paste("theta", ma, sep = "")
   names_betas <- paste("beta", 1:length(betas))
-  names_par <- c("intercept", names_theta, names_betas, "lambda")
+  names_par <- c("beta0", names_theta, names_betas, "lambda")
   opt_start <- c(mqo[1], rep(0, n_ma), betas, 0.7)
   opt <- stats::optim(opt_start,
                       chen::ll_REG_MA,
@@ -263,7 +263,7 @@ REG_MA <- function(y, ma, cvar, tau){
   model <- list()
   coef <- opt$par
   l <- length(coef) # auxiliary variable for the indices
-  names(coef) <- names_par
+  model$names <- names(coef) <- names_par
   model$coef <- coef
   model$beta0 <- beta0 <- coef[1]
   model$theta <- theta <- coef[2: (n_ma + 1)]

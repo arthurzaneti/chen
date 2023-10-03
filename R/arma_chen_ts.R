@@ -109,12 +109,12 @@ ARMA <- function(y, ar, ma, tau){
 
   model <- list()
   coef <-opt$par
-  names(coef) <- names_par
+  model$names <- names(coef) <- names_par
   model$coef <- coef
   model$beta0 <- beta0 <- coef[1]
-  model$phi <- phi <- coef[2:(max_ar + 1)]
-  model$theta <- theta <- coef[(max_ar + 2): (max_ar + max_ma + 1)]
-  model$lambda <- lambda <- coef[(max_ar + max_ma + 2)]
+  model$phi <- phi <- coef[2:(n_ar + 1)]
+  model$theta <- theta <- coef[(n_ar + 2): (n_ar + n_ma + 1)]
+  model$lambda <- lambda <- coef[(n_ar + n_ma + 2)]
   model$hessian <- opt$hessian
 
   errorhat <- rep(0, n)
@@ -170,11 +170,11 @@ AR <- function(y, ar, tau){
 
   model <- list()
   coef <-opt$par
-  names(coef) <- names_par
+  model$names <- names(coef) <- names_par
   model$coef <- coef
   model$beta0 <- beta0 <- coef[1]
-  model$phi <- phi <- coef[2:(max_ar + 1)]
-  model$lambda <- lambda <- coef[(max_ar + 2)]
+  model$phi <- phi <- coef[2:(n_ar + 1)]
+  model$lambda <- lambda <- coef[(n_ar + 2)]
   model$hessian <- opt$hessian
 
   errorhat <- rep(0, n)
@@ -224,12 +224,12 @@ MA <- function(y, ma, tau){
                       control = list(fnscale = -1))
 
   model <- list()
-  coef <-opt$par
-  names(coef) <- names_par
+  coef <- opt$par
+  model$names <- names(coef) <- names_par
   model$coef <- coef
   model$beta0 <- beta0 <- coef[1]
-  model$phi <- theta <- coef[2:(max_ma + 1)]
-  model$lambda <- lambda <- coef[(max_ma + 2)]
+  model$phi <- theta <- coef[2:(n_ma + 1)]
+  model$lambda <- lambda <- coef[(n_ma + 2)]
   model$hessian <- opt$hessian
 
   errorhat <- rep(0, n)
