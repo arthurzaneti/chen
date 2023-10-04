@@ -17,3 +17,21 @@ is_null <- function(vec) {
 }
 
 
+
+#' @title Extend vector
+#'
+#' @description Extends a vecotr by adding zeros to the end until the desired length is reached, the desired
+#' length needs to be more than the original length.
+#'
+#' @param vec The original vector
+#' @param n The desired length
+#'
+#' @return Extended vector
+#' @export
+#'
+#' @examples
+extend_vec <- function(vec, n){
+  new_vec <- numeric(n)
+  new_vec[1:length(vec)] <- vec
+  return(new_vec)
+}

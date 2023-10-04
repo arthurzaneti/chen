@@ -96,7 +96,7 @@ ARMA <- function(y, ar, ma, tau){
   #___________________________________
   names_phi <- paste("phi", ar, sep = "")
   names_theta <- paste("theta", ma, sep = "")
-  names_par <- c("intercept", names_phi, names_theta, "lambda")
+  names_par <- c("beta0", names_phi, names_theta, "lambda")
 
   opt <- stats::optim(c(mqo, rep(0, n_ma), 0.7),
                       chen::ll_ARMA,
@@ -129,7 +129,7 @@ ARMA <- function(y, ar, ma, tau){
   model$fitted <- ts(c(rep(NA, max_arma), muhat), start = stats::start(y), frequency = stats::frequency(y))
   model$etahat <- etahat
   model$errorhat <- errorhat
-  model$case <- "ARMA"
+  model$intern <- list(case = "ARMA", ar = ar, ma = ma, max = max_arma)
 
   class(model) <- "CHARMA"
   return(model)
@@ -157,7 +157,7 @@ AR <- function(y, ar, tau){
 
   #___________________________________
   names_phi <- paste("phi", ar, sep = "")
-  names_par <- c("intercept", names_phi, "lambda")
+  names_par <- c("beta0", names_phi, "lambda")
 
   opt <- stats::optim(c(mqo, 0.7),
                       chen::ll_AR,
@@ -189,7 +189,7 @@ AR <- function(y, ar, tau){
   model$fitted <- ts(c(rep(NA, max_ar), muhat), start = stats::start(y), frequency = stats::frequency(y))
   model$etahat <- etahat
   model$errorhat <- errorhat
-  model$case <- "AR"
+  model$intern <- list(case = "AR", ar = ar, max = max_ar)
 
   class(model) <- "CHARMA"
   return(model)
@@ -212,7 +212,7 @@ MA <- function(y, ma, tau){
 
   #___________________________________
   names_theta <- paste("theta", ma, sep = "")
-  names_par <- c("intercept", names_theta, "lambda")
+  names_par <- c("beta0", names_theta, "lambda")
 
   opt <- stats::optim(c(mqo, rep(0, n_ma), 0.7),
                       chen::ll_MA,
@@ -244,7 +244,7 @@ MA <- function(y, ma, tau){
   model$fitted <- ts(c(rep(NA, max_ma), muhat), start = stats::start(y), frequency = stats::frequency(y))
   model$etahat <- etahat
   model$errorhat <- errorhat
-  model$case <- "MA"
+  model$intern <- list(case = "ARMA", ma = ma, max = max_arma)
 
   class(model) <- "CHARMA"
   return(model)
