@@ -157,7 +157,8 @@ REG_ARMA <- function(y, ar, ma, cvar, tau){
   model$fitted <- ts(c(rep(NA, max_arma), muhat), start = stats::start(y), frequency = stats::frequency(y))
   model$etahat <- etahat
   model$errorhat <- errorhat
-  model$case <- "REG_ARMA"
+  model$tau <- tau
+  model$intern <- list(case = "REG_ARMA", ar = ar, ma = ma, max_arma = max_arma)
 
   class(model) <- "reg_CHARMA"
   return(model)
@@ -225,7 +226,8 @@ REG_AR <- function(y, ar, cvar, tau){
   model$fitted <- ts(c(rep(NA, max_ar), muhat), start = stats::start(y), frequency = stats::frequency(y))
   model$etahat <- etahat
   model$errorhat <- errorhat
-  model$case <- "REG_AR"
+  model$tau <- tau
+  model$intern <- list(case = "REG_AR", ar = ar, max_arma = max_ar)
 
   class(model) <- "reg_CHARMA"
   return(model)
@@ -285,7 +287,8 @@ REG_MA <- function(y, ma, cvar, tau){
   model$fitted <- ts(c(rep(NA, max_ma), muhat), start = stats::start(y), frequency = stats::frequency(y))
   model$etahat <- etahat
   model$errorhat <- errorhat
-  model$case <- "REG_MA"
+  model$tau <- tau
+  model$intern <- list(case = "REG_MA", ma = ma, max_arma = max_ma)
 
   class(model) <- "reg_CHARMA"
   return(model)

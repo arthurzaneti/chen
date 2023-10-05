@@ -21,5 +21,17 @@ generate_data <- function(){
 
   r_values <- rchen(100, c(1, 0.2))
   r_values_rpr <- rchen_rpr(100, c(0.7, 7))
-  usethis::use_data(df, r_values, r_values_rpr, internal = T)
+
+  CHARMA_arma <- arma_chen_ts(df$arma, ar = 1:2, ma = 1:2)
+  CHARMA_ar <- arma_chen_ts(df$ar, ar = 1:2)
+  CHARMA_ma <- arma_chen_ts(df$ma, ma = 1:2)
+
+  reg_CHARMA_arma <- reg_chen_ts(df, reg_arma ~ cvar1 + cvar2, ar = c(1, 2), ma = c(1, 2))
+  reg_CHARMA_ar <- reg_chen_ts(df, reg_ar ~ cvar1 + cvar2, ar = c(1, 2))
+  reg_CHARMA_ma <- reg_chen_ts(df, reg_ma ~ cvar1 + cvar2, ma = c(1, 2))
+
+  models <- list(CHARMA_arma, CHARMA_ar, CHARMA_ma,
+                          reg_CHARMA_arma, reg_CHARMA_ar, reg_CHARMA_ma)
+
+  usethis::use_data(df, models, r_values, r_values_rpr, internal = T)
 }

@@ -4,7 +4,9 @@
       reg_chen(df_test1, y ~ cvar1 + cvar2)
     Output
       Names:  beta 0 beta 1 beta 2 
-      Coefficients:  -0.107  0.247  0.433 
+      Coefficients:  0.032 0.573 0.308 
+      Lambda:  0.743066 
+      Tau:  0.5 
 
 ---
 
@@ -12,7 +14,9 @@
       reg_chen(df_test2, y ~ cvar1 + cvar2)
     Output
       Names:  beta 0 beta 1 beta 2 
-      Coefficients:  -0.143 -0.364  0.564 
+      Coefficients:  0.277 0.251 0.272 
+      Lambda:  0.3221562 
+      Tau:  0.5 
 
 ---
 
@@ -20,7 +24,9 @@
       reg_chen(df_test3, y ~ cvar1 + cvar2)
     Output
       Names:  beta 0 beta 1 beta 2 
-      Coefficients:  -0.337  1.911 -0.412 
+      Coefficients:  -2.522  1.416  0.571 
+      Lambda:  0.5845893 
+      Tau:  0.5 
 
 ---
 
@@ -28,7 +34,9 @@
       reg_chen(df_test1, y ~ cvar1 + cvar2)
     Output
       Names:  beta 0 beta 1 beta 2 
-      Coefficients:  -0.107  0.247  0.433 
+      Coefficients:  0.032 0.573 0.308 
+      Lambda:  0.743066 
+      Tau:  0.5 
 
 ---
 
@@ -36,7 +44,9 @@
       reg_chen(df_test2, y ~ cvar1 + cvar2)
     Output
       Names:  beta 0 beta 1 beta 2 
-      Coefficients:  -0.143 -0.364  0.564 
+      Coefficients:  0.277 0.251 0.272 
+      Lambda:  0.3221562 
+      Tau:  0.5 
 
 ---
 
@@ -44,7 +54,9 @@
       reg_chen(df_test3, y ~ cvar1 + cvar2)
     Output
       Names:  beta 0 beta 1 beta 2 
-      Coefficients:  -0.337  1.911 -0.412 
+      Coefficients:  -2.522  1.416  0.571 
+      Lambda:  0.5845893 
+      Tau:  0.5 
 
 # output with bootstrap
 
@@ -52,7 +64,9 @@
       reg_chen(df_test1, y ~ cvar1 + cvar2, n_bootstrap = 30)
     Output
       Names:  beta 0 beta 1 beta 2 
-      Coefficients:  -0.167  0.264  0.458 
+      Coefficients:  -0.009  0.583  0.327 
+      Lambda:  0.7563326 
+      Tau:  0.5 
 
 ---
 
@@ -60,7 +74,9 @@
       reg_chen(df_test2, y ~ cvar1 + cvar2, n_bootstrap = 30)
     Output
       Names:  beta 0 beta 1 beta 2 
-      Coefficients:  -0.160  1.782  0.074 
+      Coefficients:  -0.222 -1.816  0.837 
+      Lambda:  0.3043031 
+      Tau:  0.5 
 
 ---
 
@@ -68,7 +84,9 @@
       reg_chen(df_test3, y ~ cvar1 + cvar2, n_bootstrap = 30)
     Output
       Names:  beta 0 beta 1 beta 2 
-      Coefficients:  -2.941  1.748  0.711 
+      Coefficients:  -1.774  1.765  0.223 
+      Lambda:  0.5276884 
+      Tau:  0.5 
 
 ---
 
@@ -76,7 +94,9 @@
       reg_chen(df_test1, y ~ cvar1 + cvar2, n_bootstrap = 30)
     Output
       Names:  beta 0 beta 1 beta 2 
-      Coefficients:  -0.173  0.219  0.456 
+      Coefficients:  -0.070  0.579  0.339 
+      Lambda:  0.7557841 
+      Tau:  0.5 
 
 ---
 
@@ -84,7 +104,9 @@
       reg_chen(df_test2, y ~ cvar1 + cvar2, n_bootstrap = 30)
     Output
       Names:  beta 0 beta 1 beta 2 
-      Coefficients:  -0.346  2.053  0.097 
+      Coefficients:   0.525 -1.522  0.468 
+      Lambda:  0.3055165 
+      Tau:  0.5 
 
 ---
 
@@ -92,5 +114,7 @@
       reg_chen(df_test3, y ~ cvar1 + cvar2, n_bootstrap = 30)
     Output
       Names:  beta 0 beta 1 beta 2 
-      Coefficients:  -2.767  1.740  0.640 
+      Coefficients:  -1.524  1.786  0.119 
+      Lambda:  0.5266759 
+      Tau:  0.5 
 
