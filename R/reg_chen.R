@@ -59,9 +59,7 @@ reg_chen <- function(data, formula, tau = 0.5, n_bootstrap = NULL){ # For the re
   y <- as.vector(data[, all.vars(formula[[2]])])
   X <- stats::model.matrix(formula, data)
   beta_start <- stats::lm.fit(as.matrix(X), unlist(log(y)))$coefficients
-  # The gradient is suplied for the sake of optimization only,
-  # if it was not supplied stats::optim would estimate it numerically
-  # , so we can avoid the extra computation by calculating it manually
+  n <- length(y)
 
   # 0.7 starting point for lambda is arbitrary, just as the parameters for the regression
   initial_par <- c(0.7, beta_start)
@@ -105,6 +103,8 @@ reg_chen <- function(data, formula, tau = 0.5, n_bootstrap = NULL){ # For the re
   model$call <-  match.call()
   class(model) <- "reg_chen"
   return(model)
+
+  # No metrics for bootstrapping for now
 #______________________________________NO_BOOTSTRAP_______________________________________
   } else {
     estim <- stats::optim(par = initial_par,
@@ -132,6 +132,26 @@ reg_chen <- function(data, formula, tau = 0.5, n_bootstrap = NULL){ # For the re
   model$y <- y
   model$cvar <- X
   model$call <-  match.call()
+  #_______Variance_analysis_______
+  model$vcov <- solve(-estim$hessian)
+  colnames(model$vcov) <- rownames(model$vcov) <- c("Lambda", model$names)
+  diag_error <- diag(model$vcov)
+  model$stderror <- sqrt(diag_error)
+  #______Hipothesis_testing______
+  model$zstat <- abs(c(model$lambda, model$coef) / model$stderror)
+  model$pvalues <- 2 * (1 - stats::pnorm(model$zstat))
+  #___________Metrics____________
+  metrics <- list()
+  muhat <- exp(X %*% model$coef)
+  metrics$aic <- -2 * estim$value + 2 * (1 + length(beta))
+  metrics$bic <- -2 * estim$value + log(n) * (1 + length(beta))
+  metrics$residuals <- stats::qnorm(chen::cdf_chen_rpr(y, list(model$lambda, muhat), tau))
+  metrics$r2 <- 1 - exp(-(2 / n) * (estim$value - stats::optim(c(model$lambda, muhat),
+                                                                     chen::ll_chen_rpr,
+                                                                     y = y,
+                                                                     tau = tau)$value))
+  metrics$rmse <- sqrt(mean((y - muhat)^2))
+  model$metrics <- metrics
   class(model) <- "reg_chen"
   return(model)
 }
