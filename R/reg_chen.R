@@ -131,6 +131,7 @@ reg_chen <- function(data, formula, tau = 0.5, n_bootstrap = NULL){ # For the re
   model$formula <- formula
   model$y <- y
   model$cvar <- X
+  model$fitted <- exp(X %*% matrix(model$coef))
   model$call <-  match.call()
   #_______Variance_analysis_______
   model$vcov <- solve(-estim$hessian)
@@ -145,7 +146,7 @@ reg_chen <- function(data, formula, tau = 0.5, n_bootstrap = NULL){ # For the re
   muhat <- exp(X %*% model$coef)
   metrics$aic <- -2 * estim$value + 2 * (1 + length(beta))
   metrics$bic <- -2 * estim$value + log(n) * (1 + length(beta))
-  metrics$residuals <- stats::qnorm(chen::cdf_chen_rpr(y, list(model$lambda, muhat), tau))
+  model$residuals <- stats::qnorm(chen::cdf_chen_rpr(y, list(model$lambda, muhat), tau))
   metrics$r2 <- 1 - exp(-(2 / n) * (estim$value - stats::optim(c(model$lambda, muhat),
                                                                      chen::ll_chen_rpr,
                                                                      y = y,

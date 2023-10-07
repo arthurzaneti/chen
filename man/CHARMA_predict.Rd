@@ -2,13 +2,21 @@
 % Please edit documentation in R/predict_funcs.R
 \name{CHARMA_predict}
 \alias{CHARMA_predict}
-\title{Title}
+\title{Prediction for the CHARMA model without regressors}
 \usage{
 CHARMA_predict(x, n, return = "add")
 }
 \arguments{
-\item{x}{}
+\item{x}{A CHARMA model fitted by \code{arma_chen_ts}}
+
+\item{n}{The number of steps in the future that will be predicted}
+
+\item{return}{Specifies the type of return. If \code{"add"} than the return will be the fitted series with
+the predictions added at the end, if \code{"basic"} than the return is just the predictions.}
+}
+\value{
+As specified in \code{return}
 }
 \description{
-Title
+Prediction for the CHARMA model without regressors
 }

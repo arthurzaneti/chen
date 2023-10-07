@@ -115,8 +115,7 @@ ARMA <- function(y, ar, ma, tau){
   model$phi <- phi <- coef[2:(n_ar + 1)]
   model$theta <- theta <- coef[(n_ar + 2): (n_ar + n_ma + 1)]
   model$lambda <- lambda <- coef[(n_ar + n_ma + 2)]
-  model$hessian <- opt$hessian
-
+  model$y <- y
   errorhat <- rep(0, n)
   etahat <- rep(NA, n)
 
@@ -130,6 +129,23 @@ ARMA <- function(y, ar, ma, tau){
   model$etahat <- etahat
   model$errorhat <- errorhat
   model$tau <- tau
+  #______Variance_analysis________
+  model$vcov <- solve(-opt$hessian)
+  colnames(model$vcov) <- rownames(model$vcov) <- c(model$names)
+  diag_error <- diag(model$vcov)
+  model$stderror <- sqrt(diag_error)
+  #______Hipothesis_testing______
+  model$zstat <- abs(c(model$coef) / model$stderror)
+  model$pvalues <- 2 * (1 - stats::pnorm(model$zstat))
+  #___________Metrics____________
+  metrics <- list()
+  model$residuals <- stats::qnorm(chen::cdf_chen_rpr(y[3:length(y)], list(model$lambda, muhat), tau))
+  num_par <- length(model$coef)
+  metrics$aic <- - 2 * (opt$value * (n / (n - max_arma))) + 2 * (num_par)
+  metrics$bic <- - 2 * (opt$value * (n / (n - max_arma))) + log(n) * (num_par)
+  metrics$hq <- - 2 * (opt$value * (n / (n - max_arma))) + log(log(n)) * (num_par)
+  model$metrics <- metrics
+  #______________________________
   model$intern <- list(case = "ARMA", ar = ar, ma = ma, max = max_arma)
 
   class(model) <- "CHARMA"
@@ -176,7 +192,7 @@ AR <- function(y, ar, tau){
   model$beta0 <- beta0 <- coef[1]
   model$phi <- phi <- coef[2:(n_ar + 1)]
   model$lambda <- lambda <- coef[(n_ar + 2)]
-  model$hessian <- opt$hessian
+  model$y <- y
 
   errorhat <- rep(0, n)
   etahat <- rep(NA, n)
@@ -191,6 +207,23 @@ AR <- function(y, ar, tau){
   model$etahat <- etahat
   model$errorhat <- errorhat
   model$tau <- tau
+  #______Variance_analysis________
+  model$vcov <- solve(-opt$hessian)
+  colnames(model$vcov) <- rownames(model$vcov) <- c(model$names)
+  diag_error <- diag(model$vcov)
+  model$stderror <- sqrt(diag_error)
+  #______Hipothesis_testing______
+  model$zstat <- abs(c(model$coef) / model$stderror)
+  model$pvalues <- 2 * (1 - stats::pnorm(model$zstat))
+  #___________Metrics____________
+  metrics <- list()
+  num_par <- length(model$coef)
+  model$residuals <- stats::qnorm(chen::cdf_chen_rpr(y[3:length(y)], list(model$lambda, muhat), tau))
+  metrics$aic <- - 2 * (opt$value * (n / (n - max_ar))) + 2 * (num_par)
+  metrics$bic <- - 2 * (opt$value * (n / (n - max_ar))) + log(n) * (num_par)
+  metrics$hq <- - 2 * (opt$value * (n / (n - max_ar))) + log(log(n)) * (num_par)
+  model$metrics <- metrics
+  #______________________________
   model$intern <- list(case = "AR", ar = ar, max_arma = max_ar)
 
   class(model) <- "CHARMA"
@@ -232,7 +265,7 @@ MA <- function(y, ma, tau){
   model$beta0 <- beta0 <- coef[1]
   model$phi <- theta <- coef[2:(n_ma + 1)]
   model$lambda <- lambda <- coef[(n_ma + 2)]
-  model$hessian <- opt$hessian
+  model$y <- y
 
   errorhat <- rep(0, n)
   etahat <- rep(NA, n)
@@ -247,6 +280,23 @@ MA <- function(y, ma, tau){
   model$etahat <- etahat
   model$errorhat <- errorhat
   model$tau <- tau
+  #______Variance_analysis________
+  model$vcov <- solve(-opt$hessian)
+  colnames(model$vcov) <- rownames(model$vcov) <- c(model$names)
+  diag_error <- diag(model$vcov)
+  model$stderror <- sqrt(diag_error)
+  #______Hipothesis_testing______
+  model$zstat <- abs(c(model$coef) / model$stderror)
+  model$pvalues <- 2 * (1 - stats::pnorm(model$zstat))
+  #___________Metrics____________
+  metrics <- list()
+  model$residuals <- stats::qnorm(chen::cdf_chen_rpr(y[3:length(y)], list(model$lambda, muhat), tau))
+  num_par <- length(model$coef)
+  metrics$aic <- - 2 * (opt$value * (n / (n - max_ma))) + 2 * (num_par)
+  metrics$bic <- - 2 * (opt$value * (n / (n - max_ma))) + log(n) * (num_par)
+  metrics$hq <- - 2 * (opt$value * (n / (n - max_ma))) + log(log(n)) * (num_par)
+  model$metrics <- metrics
+  #______________________________
   model$intern <- list(case = "MA", ma = ma, max_arma = max_ma)
 
   class(model) <- "CHARMA"

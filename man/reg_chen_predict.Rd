@@ -2,13 +2,22 @@
 % Please edit documentation in R/predict_funcs.R
 \name{reg_chen_predict}
 \alias{reg_chen_predict}
-\title{Title}
+\title{Prediction for the Chen regression model}
 \usage{
 reg_chen_predict(x, data, formula = NULL)
 }
 \arguments{
-\item{formula}{}
+\item{x}{An object fitted by \code{reg_chen}}
+
+\item{data}{A matrix with the predictors.}
+
+\item{formula}{A \code{formula} object. This is an optional parameter, if no formula is provided
+than \code{data} is considered to be the already formated matrix of covariables. It is recommended
+to send a \code{formula} object to avoid errors.}
+}
+\value{
+The vector of predictions.
 }
 \description{
-Title
+This function is used for predictions using regression models fitted by \code{reg_chen}
 }

@@ -2,13 +2,25 @@
 % Please edit documentation in R/predict_funcs.R
 \name{reg_CHARMA_predict}
 \alias{reg_CHARMA_predict}
-\title{Title}
+\title{Prediction for the CHARMA model with regressors}
 \usage{
 reg_CHARMA_predict(x, data, formula = NULL, return = "add")
 }
 \arguments{
-\item{x}{}
+\item{x}{An object fitted by \code{reg_CHARMA}}
+
+\item{data}{A matrix with the predictors.}
+
+\item{formula}{A \code{formula} object. This is an optional parameter, if no formula is provided
+than \code{data} is considered to be the already formated matrix of covariables. It is recommended
+to provide a \code{formula} object.}
+
+\item{return}{Specifies the type of return. If \code{"add"} than the return will be the fitted series with
+the predictions added at the end, if \code{"basic"} than the return is just the predictions.}
+}
+\value{
+As specified in \code{return}
 }
 \description{
-Title
+This function is used for predictions using regression models fitted by \code{reg_CHARMA}
 }

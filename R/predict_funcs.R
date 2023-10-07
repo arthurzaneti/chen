@@ -14,7 +14,7 @@
 #'
 #' @examples
 reg_chen_predict <- function(x, data, formula = NULL){
-  checkmate::assert_class("reg_chen")
+  checkmate::assert_class(x, "reg_chen")
   checkmate::assert_formula(formula, null.ok = T)
 
   if(!is.null(formula)) data <- data[all.vars(formula[[3]])]
