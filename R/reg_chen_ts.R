@@ -18,8 +18,8 @@
 #' @param data  A \code{data.frame} with the variables specified in \code{formula}
 #' @param formula  An object of class \code{formula} which is gonna be used for fitting
 #'  the model
-#' @param ar Specified in description.
-#' @param ma Specified in description.
+#' @param ar The indices for the auto-regression.
+#' @param ma The indices for the moving-averages.
 #' @param tau The quantile
 #'
 #' @importFrom stats lm.fit coef optim start frequency

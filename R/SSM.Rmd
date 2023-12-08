@@ -1,0 +1,64 @@
+---
+title: "SSM"
+output: html_document
+date: "2023-12-08"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+lambda <- 0.7
+cvar <- cbind(rep(1, 100), runif(100), runif(100, 1, 2))
+beta <- c(1, 1, 0.7)
+medians <-  cvar %*% beta 
+
+y <- chen::rchen_rpr(100, list(lambda, medians), 0.5)
+chen::estim_chen_rpr(y, 0.5, n_bootstrap = 100)
+```
+
+```{r}
+cvar <- cbind(rep(1, 200), runif(200), runif(200))
+data <- data.frame(y = rchen_rpr(200, 
+                                 list(0.7, 
+                                      cvar %*% matrix(c(2, -1, 0.8)))),
+                   cvar1 = cvar[, 2],
+                   cvar2 = cvar[, 3])
+
+model <- chen::reg_chen(data, y ~ cvar1 + cvar2, tau = 0.5)
+model
+```
+
+```{r}
+y <- chen::rchen_ts(500, intercept = 1, lambda = 0.3, 
+                    ar_coef = c(0.4, 0.2), 
+                    ma_coef = c(0.2, 0.1))
+model <- chen::arma_chen_ts(y, ar = 1:2, ma = 1:2)
+model
+```
+```{r}
+plot.CHARMA(model)
+```
+
+
+```{r}
+cvar = cbind(runif(500), runif(500))
+data <- data.frame(y = chen::rchen_ts(500, intercept = 1, lambda = 0.3, 
+                    ar_coef = c(0.4, 0.2), 
+                    ma_coef = c(0.2, 0.1),
+                    reg_coef = c(1, -0.5), 
+                    cvar = cvar),
+                    cvar1 = cvar[, 1],
+                    cvar2 = cvar[, 2])
+
+model <- chen::reg_chen_ts(data, y ~ cvar1 + cvar2, ar = 1:2, ma = 1:2)
+model
+```
+
+```{r}
+pdf(width = 10)
+plot(model)
+dev.off()
+```
+

@@ -9,9 +9,9 @@ arma_chen_ts(y, ar = NULL, ma = NULL, tau = 0.5)
 \arguments{
 \item{y}{The vector of variables to fit}
 
-\item{ar}{Specified in description.}
+\item{ar}{The indices for the auto-regression.}
 
-\item{ma}{Specified in description.}
+\item{ma}{The indices for the moving-averages.}
 
 \item{tau}{The quantile}
 }

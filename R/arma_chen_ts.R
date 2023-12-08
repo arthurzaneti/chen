@@ -16,8 +16,8 @@
 #' \item{\eqn{r} are the errors}}
 #'
 #' @param y The vector of variables to fit
-#' @param ar Specified in description.
-#' @param ma Specified in description.
+#' @param ar The indices for the auto-regression.
+#' @param ma  The indices for the moving-averages.
 #' @param tau The quantile
 #'
 #' @return An object of class \code{CHARMA} with the following attributes:

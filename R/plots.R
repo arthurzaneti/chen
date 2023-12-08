@@ -50,6 +50,7 @@ plot.reg_chen <- function(x, layout = "all"){
 }
 #______________________________________________________________________________________________________
 #'@describeIn plot.reg_chen CHARMA objects
+#'@export
 plot.CHARMA <- function(x, layout = "all"){
   checkmate::check_class(x, "CHARMA")
   checkmate::check_choice(layout, c("all", "sep"))

@@ -12,9 +12,9 @@ reg_chen_ts(data, formula, ar = NULL, ma = NULL, tau = 0.5)
 \item{formula}{An object of class \code{formula} which is gonna be used for fitting
 the model}
 
-\item{ar}{Specified in description.}
+\item{ar}{The indices for the auto-regression.}
 
-\item{ma}{Specified in description.}
+\item{ma}{The indices for the moving-averages.}
 
 \item{tau}{The quantile}
 }
